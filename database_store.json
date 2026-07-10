@@ -1,0 +1,965 @@
+{
+  "config": {
+    "nombreCentro": "Centro Educativo Juan Pablo Duarte",
+    "eslogan": "Formando los Líderes del Mañana con Valores de la Patria",
+    "logo": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=150&auto=format&fit=crop&q=80",
+    "colorPrimario": "#5A2D1A",
+    "colorSecundario": "#D4AF37",
+    "telefono": "809-555-0123",
+    "correo": "info@liceojuanpabloduarte.edu.do",
+    "direccion": "Av. Abraham Lincoln #404, Santo Domingo, República Dominicana",
+    "redesSociales": {
+      "facebook": "https://facebook.com/liceojuanpabloduarte",
+      "instagram": "https://instagram.com/liceojuanpabloduarte",
+      "twitter": "https://twitter.com/liceojpduarte",
+      "youtube": "https://youtube.com/liceojuanpabloduarte"
+    },
+    "bannerPrincipal": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&auto=format&fit=crop&q=80",
+    "calendarioEscolarUrl": "#",
+    "anoEscolar": "2026-2027",
+    "periodoActivo": "P2"
+  },
+  "users": [
+    {
+      "id": "usr-admin",
+      "username": "admin",
+      "nombreCompleto": "Lic. Manuel Henríquez Ureña",
+      "role": "admin",
+      "correo": "m.henriquez@liceojuanpabloduarte.edu.do",
+      "telefono": "809-555-1001",
+      "fotografia": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/4QB0RXhpZgAATU0AKgAAAAgABQEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAAITAAMAAAABAAEAAMb+AAIAAAARAAAAWgAAAAAAAABIAAAAAQAAAEgAAAABR29vZ2xlIEluYy4gMjAxNgAA/+IB2ElDQ19QUk9GSUxFAAEBAAAByAAAAAAEMAAAbW50clJHQiBYWVogB+AAAQABAAAAAAAAYWNzcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAPbWAAEAAAAA0y0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJZGVzYwAAAPAAAAAkclhZWgAAARQAAAAUZ1hZWgAAASgAAAAUYlhZWgAAATwAAAAUd3RwdAAAAVAAAAAUclRSQwAAAWQAAAAoZ1RSQwAAAWQAAAAoYlRSQwAAAWQAAAAoY3BydAAAAYwAAAA8bWx1YwAAAAAAAAABAAAADGVuVVMAAAAIAAAAHABzAFIARwBCWFlaIAAAAAAAAG+iAAA49QAAA5BYWVogAAAAAAAAYpkAALeFAAAY2lhZWiAAAAAAAAAkoAAAD4QAALbPWFlaIAAAAAAAAPbWAAEAAAAA0y1wYXJhAAAAAAAEAAAAAmZmAADypwAADVkAABPQAAAKWwAAAAAAAAAAbWx1YwAAAAAAAAABAAAADGVuVVMAAAAgAAAAHABHAG8AbwBnAGwAZQAgAEkAbgBjAC4AIAAyADAAMQA2/9sAQwAGBAUGBQQGBgUGBwcGCAoQCgoJCQoUDg8MEBcUGBgXFBYWGh0lHxobIxwWFiAsICMmJykqKRkfLTAtKDAlKCko/9sAQwEHBwcKCAoTCgoTKBoWGigoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo/8IAEQgCNAI0AwEiAAIRAQMRAf/EABsAAQADAQEBAQAAAAAAAAAAAAAEBQYDAQIH/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAIDBAEFBv/aAAwDAQACEAMQAAAByQzfSAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHzDVTvmmiWY72JWJZpfkZKns4nOziO/SIdse1M5ZpOmZkw13qLKhtDlgAAAAAAAAAAAAAAAAAAAAAABGrJZLKvieW+d78PJUA4AAAAAAB9yIvvJW0/N9I7NEr59Xo+jloAAAAAAAAAAAAAAAAAAAhq+1XG+LvJ+fCeUAAAAAAAAAAB74PqbCcnpvau0o9sOXAAAAAAAAAAAAAAAAACGr5VPvl/h/IlWAAAAAAPTx6PHo8ejx6PHo8AB93VJ2jfoXx90e4DoAAAAAAAAAAAAAAAHmft6O3y/gWeeAAB69lOxPq9ta7s196dXdSSbJGcLrIclxdiXF2HF2HF2HF2c5XwL9KGRi7iLZRkEjhdnt7CjvKfYCGsAAAAAAAAAAAAAAACor5kPR4HyO1AAAWempbrNu9Fd4AAB56AAAAAAUNLeUerzvvSZnRx2fYr9QAAAAAAAAAAAAAAACjiS4mj5/5HawAANLa1Fvl9AIWgHCN2FggTj0cmAAc6yULdnvJQ0SmtoT+vTk67Ma3I6cP1os7omjoKvVAAAAAAAAAAAAAAAApoNhAv8AB+BKkAD6J3O6GS4ZPR7xodRbVoc9Y006eQso9uqWdGeqGT0gAMvAv4erBVrKPKuJNieObCRi9HRsl43a5CdfLRZ3Rdu6Cr1QAAAAAAAAAAAAAAAKivsK+/wfkSpAA+tDntlXf1zWm+KNOftJ6XK76nuSq1ocq5MtzoRsAAAA+efZ2NH0uPJQ9ob7jyWZuvVmsI3gAAAAAAAAAAAAAfP0OA7V1t9RXeLzE8oAErYUl3n2hVoDgJcI/FGcg9CU895MAA5ZmdV9X0i/LZ8oSUJEmsOaOZkbOvXaCv1wAAAAAAAAAAAAAAAB8nKi6213ixrKxU2wolw53IfGuz92bRfUKbn1kGgnDRV1J7dmlcJEGVTw7x74NFcTYWX0AhaBEo9P9XZcGL8gH69b/Okqv/I8PtqqUa6TfUterr0rrHm8OXAAAAAAAAAAAAAAIU2ollgbHLa/vnqi3+atEaXnLqUJIru89CqsrP8ARtGPCaS9++Py784/SPze2jwdiB+oVN9Q5PQCNoDl1rbc+Xe+aMQH7lps59VaPyOWp+81lVa1VOmouqW7ttCveAAAAAAAAAAAAAAq7SBLNV7TD6yXmzBn2c89paiyi1+oE+Fock3+A6dh+uM1o7c/5HhNfkbs3yO89+vmUfodX054/TDkgGb0ldZTmEnlpw8/qdcQnt89xZt3zjdpmrabyBzrJQ7XEaTH0gjpAAAAAAAAAAAAAAc+hHN3PCvu8TZo8jNscex2l53Gavy6tx7Uag51YV7vPvC7fhZnxzQcraKSVdWUbPoZ9gAAAAAChvs5ZRWWHxb2vRT6wdAAAAAAAAAAAAAAAKe4Sz56/r66zy9n7kOtc9Jl+Eydcy9x1/GyyFGoAAAAAAAAAAcO8ZORM0Zekor9cOTAAAAAAAAAAAAAAAAAfP0ci/Mx2nj2OW8aTQ855Frj5bFpXDvTqDnQAAAAAA4OdHZVY575uLquM8r9UOWAAAAAAAAAAAAAAAAAAAAAAeQLApztrKg2efe9cfaQjeIsqu8OSAAAPmrlC1qqb6uz85M+Q0fH2V+gCQAAAAAAAAAAAAAAAAAAAAAAAD4+/jsM0NHzyXE9dtpubQns+2HkQu2DLeRnpamomzjE6WvZfFlFe4FgAAAAAAAAAAAAAAAAAAAAAAAAADl3jdpoLCv19vjY72xrZV+DvAPubCnxttvSj3QSAAAAAAAAAAAAAAAAAAAAAAAAAHp57I7zxRe/SuswWMWkmdqrNNktlXcor5Vfh2pzmjFHepQ9tKu9jdKfXzR7oOgAAAAAAAAAAAAAAAAAAAAAAD7R+PqT3nij9/mpswW1TRcpUyooNpi9MZu1iReS2v3j7ejVc8+XsbYEWfS3ZYU6whWUaPnmrmN/37J8q9GO98jrB0AAAAAAAAAAAAAAAAAAAATe0c5Ljd4/WsrqqVXTkAACbCGxx2nkGQB68C+9sSJmgAWFeNXJxthGy6+O6v0+AhtAAAAAAAAAAAAAAAAAAHrnSQzN/h2VFySoAAAAAWdYNWyg2srACyrQAAAA6aPMemziw7ivfCFXqgAAAAAAAAAAAAAAAAezeMW7yIVP55PEAAAAAAAAAAAAAAAuaYbDhxlU+tzENwAAAAAAAAAAAAAADvymTwx8p0j3eSAkR9GQarS5oAAAAAAAAAAAHQ5pnwRgddVkrTk7N055/dBYAAAAAAAAAAAAA897q+1BYZrR4XyOwAaPOXhaY/b4gAAAAAAAAAAAWlXcGio72iKEAGj6UWhhq+RT7QAAAAAAAAAAAAceyfKC/wAiFx98niAAW9RPNZidtjyIAAAAAAAAAABc02lLbN6TGkYAC9opRcd/r4q9f0V7QAAAAAAAAAAHp2MrHGj574DgAD6DbZYIAAAAAAAAAAAGyD7xQAAATbAhrmCj2Q6AAAAAAA//xAAvEAACAgEBBwMEAgIDAQAAAAACAwEEABEFEBITIEBQFCEwBjEyMyIjJTQVNUGg/9oACAEBAAEFAv8A4i5mIyXBGTZnX1DMlx5zTzmnnNPOaecw85zM9TORZjBOC8vMxh2IjJcc/OLjjFNg/Jm4RwnlOTPZiwhwLODMT45joHGNI+4EpGV2NfFsOAhjiLvEM4J8Q10DhTMz3tdmnh7DPA12cUeEsM4I8CJSJDPFHgvtjS4j+SK7ZyKrcGlkU1Z6VOQlcRyl5yl5yl5yl5yl5yl5yl5yl5y15yl4VRc4dMow0sHoqT7eCsFwr+JajZi6WAsQ7RqQZjAlZ5XLRvgrRf2fDUDjd9o7baMfyyPafBWf3fDs4O42nvD8fA2v3fDs6f6u3vRqjcH4eBtfu+HZ0fw6TaAYVtUYNpRfAZiEHdGM9aeetZgXYwSgo3W/9fcH4eBtRoz4a4ctW5jgDDZqk3GfRQZoXVd/2OhDpVKmi2Md+rcH4eBufn8FUON2NYKhRZ5jbAcDaX8kzGk76n7+q2gjP0bMmo2MJLB3gUiVazzMKOIWDwngfh4G5+fwbPDQcZDXMCs2Jso5xJrco21gM/RLz0S89EvEoFXx/fJWE42nlWuQMyxWmCBJTP8A54G5+fwKjRWR9+3Z7D3/AL8W+3Hv1qHjPszsrHCuzOTbbk2GlnOZkXG4m3BS37+DcHGMxpPVs8Pgly4j1Sc9UnBsKLI6mHAA9xsnrQ338G4+AZnWV1GFg1FxnpU4dKMaslyuOJgxAxvOwsIK7hvMsmZmeihJ6dNlcsWys1aOjYyEnswqdYo25Sr15xTTxjpHFlxB38zpDD4yoq6TGDixXleVDlissPhWNabJyPfGIasOnT/F9W3v40uj6eiJ2NpGfVLuPaNAP45tGMrHGnf2i0DFBwLy0bVsQ+GxviNIz/j32GV9g2CxGwq4YiupGfVesB0z/wBH1fUJxIdH03/0ubV1LaFFnEvNofoQMGff2/Y0R/duKOKHqKuaGc0eii3lWYUOcEbvrGf7em/Meg6ttzqXR9OxpsbbFnlKvK4gQzlMzaH6K37e/ufcZ4S3mMGIzNax07Jtc5O76tnXaPTtH2d1XpmX74xN0KdFrCayYiYMeEq58adoH7VY/s7+3H8Mqlxo3316jSPiT0LMlnT2mDc++fU8TG1+hIcxzT5jOq2nmYazDIiZldZpYisK+i9Gj6TOBTT5h1w4Q7844hnKDPfe0eNez9daTf7emvccjNssi8HQkONnz7Rj+eIXxT4G0vAmRlLIYveC4CXxy7CT419TFAeHSjPQzqumI5pEdhfLVtcYI/BuTw4JSBLtCWffcZiGOPmMos0nuXMhQzMkSA4B8IyvhRpIMMMKw2cmZnFoIsMZCa1iDHt2sFcObLSQrSPDTETkoXOenDBWAzjQg4MJAq1ni7Z9gQgzI5SnTxxhBwxchKbJLxTRZ2RFAw63JYIyUrVAR5A6+aEGKuTGAYn80zEQ24MYRSZLRJYIwPkyGCxleNAMgldzFvWfxTOkNuRGMYRyKiPFqgPLH+G8HMDAuMjBuhOC0C6DMQg7mMIjlaSLASI+YP8ADrFhBnq3YVls5/I5BEzgrEfNNnReNRIr66w8RxGnm9NcsxMJxcQSLCJUXVT/AD8zC5yFxue4Vw9vNNX6tNcsVZjqqR5eI1yF5ERGa6Yy4scO2wstpQNMdNddd764swwkJ30giVzGnlIiZwV5EaYRiENuxjGmzfYUk9hZXsSrBKCjcQwcHTjCplG6s6Ul7MCV+RgdcFcRuIhGG3Iwyk56NkErmPUSWYBkErue4vWWc1eMtrjGtJmbOByzuv8AU2VOJcrujOQa2YS8mJjxor32LUBhFJT1IaSWW1BbodWzKJXGXbIKnoVYYGJtAzCXrkxMeKAdNzGCuLFqWfFsq0C5dskyT0VNnOsZZYmnW602TXiXA6DDTxCxwsdcwikp+OtadWgNorJZ26Ur/wANjdpU6+eqd6b4YnSa1mDwg1zTTwoxrM6CFl3NLvq1rTCjijwgDoN9vEXgKlngxkeDUOXH8Hg6LuISjSfALHXLLuUBTrO9ayObiYT3wzwzBc5PfjGsmULBhyw+jZwxwbRj+ruIiSmUMgTWS+io7lEwdJ74B0i47jLp2bP9dqOKv3FCNbH3zafTTLmLiffvFx73XcA9WzJ/kz3X3Gzf35tPpUcrNsxId3HvLDhKzKTLq2dOj8OOEu32bH9uXz1d07PPXB1A+6UOXGcbeuoXDYyx+/t9nDovHTxN6UFwNtRqETrHcR93Ton/AM+AJ1C57We3rRpXdPCrrhxwqp+rsf/EACwRAAEDAgUDBAIDAQEAAAAAAAEAAgMEERASITFAEyAyIjBBURRhM0JSI4D/2gAIAQMBAT8B/wDBlwrhX50kzGbp1f8A5CfVyOXVf9rO77Wd32hI77QqZB8plf8A7CZI2QXHJlq2M03UlS96v7IcRsoqxzfLVRzNk24skojGqlqXSbbe8x5YcwUMolHDkkEYzFSSGQ3PAglMbroG4uOFXSXOXttdNgJX44XRYsjfpZQsoWULKFlCMLSnU/0tlRPzMt9cKbV57YG2F/cl81QnU8KXzPbD4Y9QIOB27HPDd112psgdthP5Kh8uFOP+h7BqVo1qdLpdqkcSL4MOqGL2G6ykIXCjmzaFVCofLhVH8h7IG3KkZmQiAFl0xay6LUIwPjusF0m3unRiTRQQCHgAWwqmFr+yBthfG66jftdQfa3xklDNEZnLOSsxVPPZ3q4RNtSpZDO/RNgaN10mKSItTDduifOG7J07irnGHxxnaPLFtrINzOsEXSRt0KgkEjAeBWOLY1TD5T25homPN8rsP0nRAFAAJ2+MXjjUbYtF1/G9S+JVCPTfgVmsapzrbCZv9gmuuMHtzK1kd8AmbYztzBWTYy5NYGqpGgKdJdllSsyR8BzcwsnNMT9UHAjREfCcDHZA3F8LXT4L6tXSemQH57bYz+KpafP6jwp4BIP2i2SE6r8gJznTHRRSZfS73CQN1YzvsFGwMGUcMgHdGnj+k1jW+IVTTZ/U3dMlLPS9Ag7ey+QNTWvnP6UUQjFhyJIGybp9O+LVqbOP7IOB27XPDUZHP0YoqK+r0GhosOVL44bISuCFT9r8kLNJLo1R0V9XpsbWePMmeAwpjMyItpjCLvAQFtuWTbdS1jW+OqfVPcr33VPunxhyfGW4QODZASgQdRyXODdSpK0DxUkz5N+xri3UJk4PkszSN1Jk+MI53x7KKsY7fRAg7caecRC6kmdIbn3Y5XMOigqw/R3ELg0XKnlMjuBBVFps5b6jhVU+Y5W7cKjnzDKeDWTZRlG/DY8sOYKOQSC49+WQRi5T3l5zHiU03Td+kNdR71XLnOUfHGopcwyn491+yO/Go/5Pa//EACURAAIBAwQCAwEBAQAAAAAAAAABAgMRMRASIUATIDBBUTIigP/aAAgBAgEBPwH/AIsszxiiiyLFiyNqHTHx2VAUV8bgNW6qVxRt82SSt07XErdCSuY6UF7OokeVnkZuZuZuZuZuZuYqjI1dJ56Sx61Xz8kMFTpL1qZ12scWvRRbPExxa0pYKnSjj15kyNPmzIpLSS49IyVjcjJKnbBSKnSjj0qvghLaeRm9nkZvftc8jsQltZKV+lB8elV3fptZtfpGnuPGiyLIlTX101/lDqN4PIyM9xJckadxQS9KmdaUvrVl9quxSUmS4fQhkqsi7Eo/a1jMuLGs860s6s/qJT/onnoQyVVxpTf0NWdtELVjzrTdmXJTSHK5S/CMLSuS5fR/pDVmYYmpXHxxpgjV/TeiVVfXrfWlklLpRlY4keISUSpC/K+RK/Av8oz1NzG7kZEqd+UNW+GMHI4ghu/Y3WLqWSVL8GmvVRbwKmlkc/wz2o51cEx0jxMUFEc/wu33FklLaZ1eO5k2G1aVSM3EjJS0lyjHaUDb6ZJUvw2tEd33ptTHDrpXLfLYlDqxVuhKPThHpSj0YR++nkat86XJjqSV/ngutNfKs9eePi//xAA9EAABAgIHBgQDBgQHAAAAAAABAAIRIQMQEiAiMVEyQVBhcZEEMECBEyOhFDNSYnKyBUKCwSRDU3OgsfD/2gAIAQEABj8C/wCEXM91nFSAWa2ltFbRW0VtFbRWayCmFI8XmVhms4eftKcjxPVZw9JIrEojh2p9ThMFj4XNaD1nLhMGzKn66y7g9lvAYHMcFgMzwKKjwQnzdgrZ+qxu7LeVsfVQsN7LYb2Ww3sthvZbDey2G9lsN7LYb2Ww3svu29lsN7KUlhMUbTTcLeB8z5eFsV8x3ZYWw9JMYtUWndUOB9PKEchP1DHe3BT5Tn+3qKOsdOBHyiN8fUdK29OBHynO1N7E4LeVmQo38RgsIj1WTVk1Y2+4UWmIrfW3pwxrd9eJyt0cFNxuWDkb7rsslhPtU/8ASa29OBDp5LRVF3ZQMhuRCpGKBuMvhzBFbllH3U2ntXESKsuk5EFOboYVN6cCHTyS/WVRNkkoOhBAxgrQdH2VoxCzcs3LNylGPPzJsC+WfZWnyqJYIj/pTEOvAx08lohCVR04xyuDyA3X0m1HosLQOqzA9ltn2kvvH91mD7KD5c+C81O+55HTyI22rb+i21Jw91G8XFTMtB5ADjLLgnOqeEKeJbH1WB3dQcmt1MFACAubUeiwN7qbiokxN0/g1vQGeabTUjYMcYCc+12gLqKjcYGZaNSoHw9FA/lCDqMWJZA1AAWkItgTqgeARUVbcOl2DgCoibVE5iVUBMrEa2vpKNzWuyJF7wTpZES63/BMG8F13wxhr+41fDEvhtRfvyqYfqrJ4BZ1qDdKg4E2Vo7S5ACAqf8AAaHb8wEDTPZRjuQvml1IewXyaNrei8MNbX9r3gPe/wCCZpRR/wDdrvh/6v3Gqnduc8kKycxUP1KfAAmda4GYVpuWq577rCdkyNWVXhhHcZXvAMH+kD9L/hP9kfudd8N/V+4r4bTjerQzarVQ/UhwBpQIzFwg71NRu2HfeNrZyov7m82iBiKJjaPtfgTkIC7ReHohae1s9IoveYuRByKI0QPeaDPddOAA1N5SuB+8L9MrocwwcEG0uB/0qpCRJzQR2usZ+IgJz/xGN8FuYWJpCgBErKHVRdN1w81SF2yJouXPgBFRYd8xcc1PCLXHa11vQa6X4Sm0tiFMwQlvF1rfQNdrKq07LgVoIEZhAjPfccR/MnQlOITXa35tnqsDj7rbEFjxLp6CGgU+CRGSBEigH4T9FKrEYIuVg7/VROeiicyuZ4LFnZTEFhcQpvKmpyCgUGuMHD6+oi5ROW4K07Pg8wCslvUYVwKs0kjr6aU3LEYqLhPTh0CpqG0FhPt6KLjAKDMI13qS1PEMlgW8KDxHmsJj505BfLmouMSpyCwjic1EFRbJfMEeak6flTkF8sR5rG6PGHdLmFx6KcHLE0hScLmIgLAPdRctAtTxh3TyMLiFt/RbfYLeSsUlIcad0qa8TBHkdFIccdUwHKC1buvnpxqdc5qMIJnRQPZRoxLS87jE1JTWHEVnDoqGko6e3Su2mxyU1EVxbAOUHCFx53xU+KSU1JYjBfLEeZWJ0a6GmomsY9pg7U7qrLptWGuDhEKLDAo4mw51fl3hSUuIyU6sRgoUfdRcYm6+jpPD/HfSCDBojR0jYOGYqi2SApB7qTu62291hxLEV9ro6L4lHRGafS2Q21uCwn2WMWVJwKksuGzrs0c3aqLjE3xSUbrLxkU3xNC176cffOPS+YQsMgXJ9F/DqRw8M8YhzuydLQqeE81JT4Vzqi8wUGyb5T6HxL3DwzxMBCn8IfiNdOzvAu0boWaFxh8Qql8IwH7QDA0rZR8iGY5qWehURlwiJyUXGDVCimdVFxifMd8B9m1mvC0VP4dpo6HPnJeKA8LB1J93+WS/zNjnmv8ABUDHWmQdKC+z2/k/h8qIzVl+0pcHnlvX5d3rw2ky14NzVhpkOA2X7OuiiMuB2lYbtH6cD+G724FEr825ROdyDREptnf64EZhBw4CXHIIuN0v/mjBA6H1MBMqJaYBC0IRuQdslR3H1/NWWnCLzxzT+nqRyFVH73TRuzGSIMiPWxVhu0b7wnDl6k/pqo/e6HBfGbMb/WQUUXHM3zzFRGnqHdKoaC86jdkUaM7svVxUshl5DKqTr6gu1NTzzvNchSNzagdfVPI08ppOif19QzonkZgeQWRw+j//xAArEAACAQIDBgcBAQEAAAAAAAABEQAhMUFRYRAgUHGB8DBAkaGx0fHB4aD/2gAIAQEAAT8h/wCIu2w5p/NJhm1nZAheL4n6U/Sn6U/Sn7kArUchs08ooHNzG/i4lgczKVUzM/mUJJvCINh8Fo0lEb5lMTia3Aq0hf4BCEs+SxlPIoAlCuX1ArWOHMxYlGaGQhoY/KCAx0gFQCOcBYdweFVcrlKYOQIfNlQTXeAsO4PCMUHGNRx186+ymHB75tCob+ftwYoJ+CR34CEDhBhCxrwNoTYQniQIPpQu6R8MBqk9dsEGLPKJvOwUUnWafh/qfh/qfh/qfh/qfh/qfh/qfh/qfh/qfk5+PgtCT0LfrG5HXa0pJAXK3OXK+cOOZgsM95oNAQ+DjL5AOkuHGtIOlq8oNJR2Vl4K5bDaynA2LgHhDGAETQAAAQAQy6eXow3B9B/3YaCI2HhfnwL4fx4VAnLCGnz3/wDTs7y8azq/mwT2b44F8P4h8EBwx/Xs+WOffP12HKQLgT8f3b7ZwL4fxD4KXsD0/d34mJLJywHkCHF1ITgLAAsGtFvkhGHdhHAPqoh/zzBjelDiAvUlbw2gSJE0HSu32zgRik425eExBZXnBNIDKHelYcpyWYn9ibRDtqVNDv8AxfgQbHsZblw7x9qY4h02d8yMN9ntnA6F/AYlQ2abHh5Zu84ZICCjWE9J5TWJ/ohi3BSKLYL0jv1yAI9IF/eYJ5IY0Yggg22BRSCAMA/rB2ERgZUy5se2cLpqAuhy7+IWirrtxJgKQDWkFRgNGVCohihv3nD8whihUQhuAZ2wn6A+p+oPqFyXEOiHwiBcHA2J0h2+s+5gSNB7HfmpAHoguCBmEAAACw14F2XPwMZh0C/TY4GQGLFvTyw2FRxNPfz4mJk3DP0UL3zjsWW5y8hdmtG//DERWXZw8lcgEvgF2Un7mCENDBB8QcGxwWhFdB38cEt9loZF2+QsMvAORHN9+k7hTuA/UIIL0e8IEADQ7y2EBTUxiF6DwCWDCVtwQJs1oQhNzADShevZgukkVcqdwogXaCU85HODMYEBKxbcdE0Vw7orW4yaYWTh8VqHdMEQVa1ZD23hItB7e8f54pBvl7bpA5YUet6QnMsBpYYHCEIiTNoS9fiCPFNEFsjOjCUJv98AGcsKwzXSAILgB6dd0sHNR3rG6s2PLUqz2FKSXe0upGWEMAkgG4thDoPlvOSwFMgGLLewlfLxpb7O6qCwwRhLhAAHUmvwR7wYMuo5bEAIzB7dYtvOnAMQAwJoEXXH4MMGWFbmrQWGBXcCUNATCE6Sls5zMaxGwPbW94GBxZVnQV94KV/qOZdTl3lCJRQi9B9t7qkHuZhumYgmepW8IJQhluAWTpKpU6ajZ7R8GHANUYgoFh6+fC6qQ4wBAIIg+u0JQMvAM5rpk0gWigpN0RkiNeBimJgDgiAsJo0fQyK+28Fh3sv+7wj8MrdFLMFDB8eglB8ylxDBwY6jZ7R8Gd7lwAVnKd+sLcIxuWy6OUPBYKHUQEEALH43RBPRR1GcuIIIMGoAa2r7oqZi1os0/wB334ECZgL/AN3AJOsT64E6CqUcakx+IlZoCPfWEL3JGViZSuVmEs/fWPMnBwB2SK79NgyXUHpl/m4phgnlEIJqXo7e7h64fv6ghPMxfUBAPCF1Bi4hBTqDumBEAhXrCFsX1k/e+URAaSzDgyiNNXMGiiZCZL50qKM/Gm4xEWA2jglozX/IbNDQS5tqngDfjBgxX3Q7+NzOQhjGKw1DymAiureVJnnQtJeAjcH/AM/ssdwmCE1WUy8L53TjAB7JWUwp0mHAUe9T3lwoYhMBRRkdxlDKunbhsA0GGIlDUn3vtFN1Quwpqr9SqByFJchL0gQokQ0GnkFYuRUtFAEABy4EQwQajvCEr38YbtEvxsYBAMm9gammEMbCfVQJyACsVVfNFN41mhhUIzC1zmcEIYINQaTFe2EKpiUQI2nAquHSkIsmTBIJbDYIFRVOj/PMNZhTX7lpHMKDBcCg4P8AAADCFw5GDnOcWFWxLJRDE7gGJAoAKGb/AO+WOgvPtGchawQBr2OHGoL2i9AYENEm3KAnWXR3n5I1CR3T+Ry2Ipg4+dTiBAIRYQVyWkJgYJhB4QjMj/sFkj7ZeMZExmH+ygC+ZoO/SPigQY/NAyABxMAhY7xgBFUDUY0lpCgpLJLB2UNPCG4tQ84GIZzWj8QoOCtrEZueLe+fEN9qBICzMek1WcoocvNxfjkHR9NxmGKHJShmjQEk5mJz1DDrPGD3zfctwN3nYCBiCXQERJAKvK4adJ8+HjQCDmmJhmEhOhWwbowgK9gcBYAXsuNgrA/eHMilPmC8DC0v0lkMu3jOy14yAT1hmQd4QHUxIBBSjrGwCrLX0AJuAQAhFaLFCEAIGDT6Q4XMq4+9685Di5CoGZn+ggBB3rCAEkhnlzMpPRUEwsMEm162D2ylKxA9YABjG1oDNK8fQWu44OEoQ0C4oVoma9PuAChCOAh1gYIcyIcrBltH9sR5pdcUcNgCpgDKCxIEHXaquxUaQ/og2jsvMSpscblCmJgg1EMA6le3tM+IGtUmYD6RK2FsIdEA6mDML1xtWpu25wABarv84KYlrnLYEkJDIwaQBjf1UHUfZCIO1oPtAtxjo/WHzZyFhAB2qyFb/XpLg28qkNiZG+AxMDlmKy9loV8/UKLnLgnDEysfWWj6fsyyy9I32u/iWwsVUEPyN89J0SkQE3DfxlbDfZXFlEjIa3lmYxviTrZbqGqEKGWjACwS2qer4SMIu8WxUIfPSGf98Q+Ca23NGmIralIMy+PQeZwIzpuuTRQfLnTnK7JToXqi7UVvAXtpwUdTCndC4Qw2Are5iA0J0rmfqCD55tCcgmJ8RgtMKBX1h/CW6wt76wF4hkhgDpVmmc5ey9faHQBlao5A0ri85i2t0DN/PhHEQgLGLTgYTnA1UG8JEQRbgpFCXahq0PRss8+Z29W3OD98G8/OBprWkVWep+u/aJ8x1uY6LgDoPlEFnGL1z4HrK21ibaFdH3wMDuoC1CU/04DZFIAyNYo+4U5SSvuZj5KtE1A9PPFKVUEFcxDP19cATjrLEA/8l9k7v4kKR/fD+eZGQkhpDIXcpK88DcrmcfQ5ygK2P3zww7c58n+/o73IDe0W8Q3p5kpGcTyt/YQAINQafs7nTdf91eSMHMojzr8gSs1Gug3+YgD6QNQIfI8z2eo2d7pu4R3vBALB6P8AICwxV+bAgC9o8r4DMwpLIzvoBxfuZ5TVYR5is4BfU7FIW+beQrhMfUEuE3cnmyN7Yc3+Ru2H4BrOJR602AuZ8w3r0umyvNy+d6vyANeU1RFmxMrAfmQo5w18A/g+CBVRcQ14EDBRHmAkcp+YWjyCPAHypTpCZA4H+eS//9oADAMBAAIAAwAAABD3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333zz3333333333333333333333333333337W7IMOQ1ff333333333333333333333333NXzzzzzzzzx7jf333333333333333333336fzzzzzzzzzzzzz77333333333333333333uPzzzzzzzzDDDDDzxrz3333333333333nX33jzzzzCpJMEAAAAPLXhz33333333333333331Xzzzy4IIAIIIIIIIKt/wB999999999999999998888DCCLHCCCFGHCFB99999999999999999a888TjZPsHACCuKzLJB99999999999999999/888N2BBzRACCCChmHs999999999999999d9X888rCDBDPCCCCIAes999999999999999998FBB4DMBH88DCCA88dgy+999999999999999vQBCBA1S088LCCC8805V0999999999999999+uCkiCHM78poCCExri3N8999999999999999/KIQQBCQCyMDCCCCCCSUf9999999999999999YQhPsCCCCCCCCCCCEI+999999999999999999sf8AmTwAgggggggiRPvffffffffffffffffffffffWoqgAggggXVX/ffffffffffffffffffffffffaPOLzhrHf/AH33333333333333333333333332YKfzwd333333333333333333333333333iSntFE3yrT333333333333333333333333vgZzzg6dXmDrvz333333333333333333332+uxzzzxDzzzzyytj3333333333333333333z6zzzzzyxyzzzzzywbX333333333333333301zzzzzzzzzzzzzzzyxH3333333333333333XzyhTzzzzzzzzzzzzDz/AP8Affffffffffffff5/PKNPPPPPPPPPPPOKPPAvPffffffffffffxHPPKCPPPPPPPPPPPOKPPKGPffffffffffffffPPPIPPPPPPPPPPPPPPPPIP/ffffffff/EACgRAQACAgECBQQDAQAAAAAAAAEAESExQBBBIDBRYXGBkaGxgNHw4f/aAAgBAwEBPxD+FnhbUIx96alr4imF/dnvJ7yDyL7x2yA19iWgxycCyj+6PaKd+S3aqYbF+YXa+nFsjj1KvOAdhLyb78NnB3wIGNd4Zd7zrhnPWvPbwiVEzbiHdWAdoBqPZJ7JPZJ7JPbnZogWoiqZkHnvjqlT6vh+ZeYKVRwPjhfnv78NqX1R2zbvBskz1Nm6GrTZ8cKgffwGoJYj0lcAj1dGDU93VrojvES2QqbIWxmz44X5PgzPpMEjxd4azE9mPWQeFUyQOiVigjWV8/569i9nwfOOtYhhgtxHqOvrJi9NR2lgemKZpDgmXQSg6doH3RbFRWzJAJwmDyZo8Rbb1CG3r851CFkDWRFllwM9/ngKK74mRhMmmI0E6ABSXKaAjt9RR8RUCZz66YrAzfAF1dv7la9XRMbCVb0oVFYs2dN4KJ1TDuKMVHtYhlEwiVvcxyvbngEq7yj9n6hJ0l57oQvRhkOid5asiWKi28PDTpcYUYDNR24ZlSH9QqyZgQEZaq8w24BtBAeg4Z9GyLbRDaog/wChiVENteTt8swrEUY+vIKwmfbI7GDN+vwVN+x+j+5sX0/7KoUcrf8AEYLpO8RuyPYIIo/3zFVv2hdCjmZ4zTCud4jt1Nz1hihXLEWqmHyfidzr4jVathyYDTuI56aAILZfJAtomLNx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",
+      "activo": true,
+      "biografia": "Administrador general del sistema con más de 15 años de experiencia en gestión de plataformas ERP y CRM educativas.",
+      "password": ""
+    },
+    {
+      "id": "usr-director",
+      "username": "director",
+      "nombreCompleto": "Dra. Altagracia Mercedes",
+      "role": "director",
+      "correo": "a.mercedes@liceojuanpabloduarte.edu.do",
+      "telefono": "809-555-1002",
+      "fotografia": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "biografia": "Directora general del Centro Educativo Juan Pablo Duarte. Doctora en Educación, apasionada por la excelencia y la innovación educativa en el país."
+    },
+    {
+      "id": "usr-doc1",
+      "username": "profesor1",
+      "nombreCompleto": "Prof. Carlos Sánchez",
+      "role": "docente",
+      "correo": "c.sanchez@liceojuanpabloduarte.edu.do",
+      "telefono": "809-555-2001",
+      "fotografia": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "especialidad": "Matemáticas y Física",
+      "biografia": "Licenciado en Educación mención Matemáticas con maestría en Tecnología Educativa."
+    },
+    {
+      "id": "usr-doc2",
+      "username": "profesor2",
+      "nombreCompleto": "Dra. Carmen Jimenes",
+      "role": "docente",
+      "correo": "c.jimenes@liceojuanpabloduarte.edu.do",
+      "telefono": "809-555-2002",
+      "fotografia": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "especialidad": "Lengua Española y Literatura",
+      "biografia": "Especialista en lingüística y fomento de la lectura creativa en el bachillerato dominicano."
+    },
+    {
+      "id": "usr-doc3",
+      "username": "profesor3",
+      "nombreCompleto": "Prof. Francisco Cabral",
+      "role": "docente",
+      "correo": "f.cabral@liceojuanpabloduarte.edu.do",
+      "telefono": "809-555-2003",
+      "fotografia": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "especialidad": "Ciencias Sociales e Historia Dominicana",
+      "biografia": "Historiador dedicado a la formación cívica y patriótica de los jóvenes estudiantes dominicanos."
+    },
+    {
+      "id": "usr-stud1",
+      "username": "estudiante1",
+      "nombreCompleto": "Juan Pablo Duarte Hijo",
+      "role": "estudiante",
+      "correo": "j.duarte@estudiantes.edu.do",
+      "telefono": "829-555-3001",
+      "fotografia": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "cursoId": "crs-6a",
+      "seccion": "A",
+      "matricula": "MAT-2026-0091",
+      "sexo": "Masculino",
+      "fechaNacimiento": "2010-01-26",
+      "edad": 16,
+      "tutor": "Marcos Duarte",
+      "padreId": "usr-padre1",
+      "password": "estudiante1"
+    },
+    {
+      "id": "usr-padre1",
+      "username": "padre1",
+      "nombreCompleto": "Sr. Marcos Duarte",
+      "role": "padre",
+      "correo": "m.duarte@gmail.com",
+      "telefono": "809-555-4001",
+      "fotografia": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "estudiantesVinculadosIds": [
+        "usr-stud1"
+      ]
+    },
+    {
+      "id": "usr-stud2",
+      "username": "estudiante2",
+      "nombreCompleto": "Camila María Almonte",
+      "role": "estudiante",
+      "correo": "c.almonte@estudiantes.edu.do",
+      "telefono": "829-555-3002",
+      "fotografia": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "cursoId": "crs-6a",
+      "seccion": "A",
+      "matricula": "MAT-2026-0044",
+      "sexo": "Femenino",
+      "fechaNacimiento": "2011-05-12",
+      "edad": 15,
+      "tutor": "Sofía Almonte",
+      "padreId": "usr-padre2"
+    },
+    {
+      "id": "usr-padre2",
+      "username": "padre2",
+      "nombreCompleto": "Sra. Sofía Almonte",
+      "role": "padre",
+      "correo": "s.almonte@gmail.com",
+      "telefono": "809-555-4002",
+      "fotografia": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+      "activo": true,
+      "estudiantesVinculadosIds": [
+        "usr-stud2"
+      ]
+    }
+  ],
+  "courses": [
+    { "id": "crs-3a", "nombre": "3.º A", "activo": true },
+    { "id": "crs-3b", "nombre": "3.º B", "activo": true },
+    { "id": "crs-3c", "nombre": "3.º C", "activo": true },
+    { "id": "crs-4a", "nombre": "4.º A", "activo": true },
+    { "id": "crs-4b", "nombre": "4.º B", "activo": true },
+    { "id": "crs-4c", "nombre": "4.º C", "activo": true },
+    { "id": "crs-5a", "nombre": "5.º A", "activo": true },
+    { "id": "crs-5b", "nombre": "5.º B", "activo": true },
+    { "id": "crs-5c", "nombre": "5.º C", "activo": true },
+    { "id": "crs-6a", "nombre": "6.º A", "activo": true },
+    { "id": "crs-6b", "nombre": "6.º B", "activo": true },
+    { "id": "crs-6c", "nombre": "6.º C", "activo": true }
+  ],
+  "subjects": [
+    {
+      "id": "sbj-mat6",
+      "nombre": "Matemática VI",
+      "cursoId": "crs-6a",
+      "docenteId": "usr-doc1"
+    },
+    {
+      "id": "sbj-leng6",
+      "nombre": "Lengua Española VI",
+      "cursoId": "crs-6a",
+      "docenteId": "usr-doc2"
+    },
+    {
+      "id": "sbj-soc6",
+      "nombre": "Ciencias Sociales VI",
+      "cursoId": "crs-6a",
+      "docenteId": "usr-doc3"
+    }
+  ],
+  "grades": [
+    {
+      "id": "grd-mat1",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "p1": 70,
+      "p2": 50,
+      "p3": 50,
+      "p4": 0,
+      "promedio": 43,
+      "estado": "Reprobado",
+      "updatedAt": "2026-07-07"
+    },
+    {
+      "id": "grd-leng1",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-leng6",
+      "materiaNombre": "Lengua Española VI",
+      "p1": 92,
+      "p2": 95,
+      "p3": 94,
+      "p4": 96,
+      "promedio": 94,
+      "estado": "Aprobado",
+      "observaciones": "Gran orador e increíble redacción de ensayos.",
+      "updatedAt": "2026-06-16"
+    },
+    {
+      "id": "grd-soc1",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-soc6",
+      "materiaNombre": "Ciencias Sociales VI",
+      "p1": 90,
+      "p2": 88,
+      "p3": 91,
+      "p4": 93,
+      "promedio": 91,
+      "estado": "Aprobado",
+      "observaciones": "Dominio excepcional de la historia dominicana.",
+      "updatedAt": "2026-06-17"
+    },
+    {
+      "id": "grd-mat2",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "p1": 72,
+      "p2": 78,
+      "p3": 80,
+      "p4": 85,
+      "promedio": 79,
+      "estado": "Aprobado",
+      "observaciones": "Muestra gran esfuerzo y mejora continua.",
+      "updatedAt": "2026-06-15"
+    },
+    {
+      "id": "grd-leng2",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-leng6",
+      "materiaNombre": "Lengua Española VI",
+      "p1": 88,
+      "p2": 85,
+      "p3": 90,
+      "p4": 87,
+      "promedio": 88,
+      "estado": "Aprobado",
+      "observaciones": "Muy participativa en debates literarios.",
+      "updatedAt": "2026-06-16"
+    },
+    {
+      "id": "grd-soc2",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-soc6",
+      "materiaNombre": "Ciencias Sociales VI",
+      "p1": 82,
+      "p2": 85,
+      "p3": 86,
+      "p4": 88,
+      "promedio": 85,
+      "estado": "Aprobado",
+      "observaciones": "Cumple con todas las asignaciones con rigor.",
+      "updatedAt": "2026-06-17"
+    }
+  ],
+  "attendance": [
+    {
+      "id": "att-1",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-01",
+      "estado": "Presente"
+    },
+    {
+      "id": "att-2",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-02",
+      "estado": "Presente"
+    },
+    {
+      "id": "att-3",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-03",
+      "estado": "Tardanza",
+      "observaciones": "Llegó 10 minutos tarde."
+    },
+    {
+      "id": "att-4",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-01",
+      "estado": "Presente"
+    },
+    {
+      "id": "att-5",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-02",
+      "estado": "Ausente",
+      "observaciones": "Sin justificación."
+    },
+    {
+      "id": "att-6",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-03",
+      "estado": "Excusa",
+      "observaciones": "Cita médica reportada."
+    },
+    {
+      "id": "att-1783387395540-465",
+      "estudianteId": "usr-stud1",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-07",
+      "estado": "Presente",
+      "observaciones": ""
+    },
+    {
+      "id": "att-1783387395540-319",
+      "estudianteId": "usr-stud2",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "fecha": "2026-07-07",
+      "estado": "Presente",
+      "observaciones": ""
+    }
+  ],
+  "tasks": [
+    {
+      "id": "tsk-1",
+      "titulo": "Ecuaciones Cuadráticas en la Vida Real",
+      "descripcion": "Desarrollar un reporte escrito detallando al menos dos problemas cotidianos modelados por ecuaciones cuadráticas. Entregar en PDF.",
+      "materiaId": "sbj-mat6",
+      "materiaNombre": "Matemática VI",
+      "cursoId": "crs-sec6",
+      "seccion": "A",
+      "fechaEntrega": "2026-07-15",
+      "archivoAdjunto": "guia_ecuaciones.pdf",
+      "entregas": [
+        {
+          "id": "sub-1",
+          "taskId": "tsk-1",
+          "estudianteId": "usr-stud1",
+          "estudianteNombre": "Juan Pablo Duarte Hijo",
+          "fechaEntrega": "2026-07-05",
+          "archivo": "Duarte_Ecuaciones_Cuadraticas.pdf",
+          "calificacion": 95,
+          "comentario": "Excelente modelo matemático, muy detallado.",
+          "estado": "Calificado"
+        }
+      ]
+    },
+    {
+      "id": "tsk-2",
+      "titulo": "Análisis del Discurso de Incorporación de Duarte",
+      "descripcion": "Realizar un análisis literario e histórico sobre el juramento de los Trinitarios. Mínimo 3 páginas.",
+      "materiaId": "sbj-leng6",
+      "materiaNombre": "Lengua Española VI",
+      "cursoId": "crs-sec6",
+      "seccion": "A",
+      "fechaEntrega": "2026-07-18",
+      "archivoAdjunto": "discurso_referencia.pdf",
+      "entregas": []
+    }
+  ],
+  "news": [
+    {
+      "id": "nws-1",
+      "titulo": "Ceremonia de Graduación Promoción LÍDERES 2026",
+      "resumen": "Con gran orgullo celebramos el egreso de nuestra sexagésima promoción de Bachilleres, formados bajo los más altos estándares éticos e intelectuales.",
+      "contenido": "El Centro Educativo Juan Pablo Duarte vistió sus mejores galas para celebrar el acto de graduación de la promoción 2026. Con la presencia de la Directora Dra. Altagracia Mercedes, el consejo docente y distinguidos familiares, los jóvenes bachilleres recibieron sus diplomas que los habilitan para la educación superior. El discurso de honor estuvo a cargo del estudiante destacado Juan Pablo Duarte Hijo, quien motivó a sus compañeros a transformar nuestra patria a través del conocimiento y el civismo. ¡Felicitaciones a todos los egresados!",
+      "imagen": "https://cdn.deultimominuto.net/wp-content/uploads/2026/02/WhatsApp-Image-2026-02-20-at-9.46.45-AM.jpeg",
+      "fecha": "2026-06-30",
+      "autor": "Equipo de Comunicaciones"
+    },
+    {
+      "id": "nws-2",
+      "titulo": "Inauguración de la Nueva Aula de Robótica y Ciencias Aplicadas",
+      "resumen": "Contamos ahora con tecnología de punta en robótica, impresión 3D y simuladores interactivos para potenciar las habilidades STEAM de nuestros alumnos.",
+      "contenido": "Como parte de nuestro plan estratégico de innovación académica, dejamos formalmente inaugurada el nuevo laboratorio multimedia STEAM. Este espacio cuenta con kits de desarrollo de robótica avanzada, impresoras 3D de alta velocidad y estaciones de software CAD. La Dra. Altagracia Mercedes destacó que esta inversión sitúa a nuestra institución a la vanguardia nacional, impulsando la curiosidad científica desde la educación primaria.",
+      "imagen": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&auto=format&fit=crop&q=80",
+      "fecha": "2026-07-02",
+      "autor": "Coordinación Tecnológica"
+    },
+    {
+      "id": "nws-3",
+      "titulo": "Victoria Histórica en las Olimpiadas Nacionales de Matemática",
+      "resumen": "Nuestros estudiantes se alzaron con 2 medallas de oro y una de bronce en la competencia intercolegial celebrada este fin de semana.",
+      "contenido": "El Liceo Juan Pablo Duarte continúa brillando en los escenarios de competencia más importantes. En la edición 2026 de las Olimpiadas Nacionales Intercolegiales de Matemáticas, nuestros representantes conquistaron el primer lugar nacional por equipos, con reconocimientos individuales de oro para Juan Pablo Duarte Hijo y de plata para Camila Almonte. Este logro corona un año completo de arduo entrenamiento en el Club de Ciencias del centro.",
+      "imagen": "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&auto=format&fit=crop&q=80",
+      "fecha": "2026-07-04",
+      "autor": "Club de Matemáticas"
+    }
+  ],
+  "events": [
+    {
+      "id": "evt-1",
+      "titulo": "Inicio del Año Escolar 2026-2027",
+      "descripcion": "Ceremonia formal y recibimiento de los estudiantes en sus respectivas aulas.",
+      "fecha": "2026-08-24",
+      "hora": "07:30 AM",
+      "tipo": "Academico"
+    },
+    {
+      "id": "evt-2",
+      "titulo": "Gala Patriótica: Tributo a los Padres de la Patria",
+      "descripcion": "Exposición cultural, bailes folclóricos y dramatizaciones a cargo del Club de Arte.",
+      "fecha": "2026-07-16",
+      "hora": "09:00 AM",
+      "tipo": "Cultural"
+    },
+    {
+      "id": "evt-3",
+      "titulo": "Feria de Ciencias e Innovación Tecnológica 2026",
+      "descripcion": "Presentación de proyectos científicos de Robótica, Química y Biología de todos los bachilleratos.",
+      "fecha": "2026-07-28",
+      "hora": "08:30 AM",
+      "tipo": "Cultural"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "aud-1783393278858",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T03:01:18.858Z"
+    },
+    {
+      "id": "aud-1783393200763",
+      "usuario": "profesor1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de docente.",
+      "fecha": "2026-07-07T03:00:00.763Z"
+    },
+    {
+      "id": "aud-1783393175563",
+      "usuario": "estudiante1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de estudiante.",
+      "fecha": "2026-07-07T02:59:35.563Z"
+    },
+    {
+      "id": "aud-1783393168982",
+      "usuario": "estudiante1",
+      "accion": "Fallo de Inicio de Sesión",
+      "detalles": "Intento fallido de inicio de sesión.",
+      "fecha": "2026-07-07T02:59:28.982Z"
+    },
+    {
+      "id": "aud-1783393137110",
+      "usuario": "admin",
+      "accion": "Edición de Usuario",
+      "detalles": "Se modificaron los datos del usuario: Juan Pablo Duarte Hijo.",
+      "fecha": "2026-07-07T02:58:57.110Z"
+    },
+    {
+      "id": "aud-1783393048211",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T02:57:28.211Z"
+    },
+    {
+      "id": "aud-1783392739755",
+      "usuario": "padre1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de padre.",
+      "fecha": "2026-07-07T02:52:19.755Z"
+    },
+    {
+      "id": "aud-1783392730147",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Registro de Calificaciones",
+      "detalles": "Se actualizaron las notas de Juan Pablo Duarte Hijo en la asignatura con promedio 43.",
+      "fecha": "2026-07-07T02:52:10.147Z"
+    },
+    {
+      "id": "aud-1783392681550",
+      "usuario": "profesor1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de docente.",
+      "fecha": "2026-07-07T02:51:21.550Z"
+    },
+    {
+      "id": "aud-1783392493155",
+      "usuario": "admin",
+      "accion": "Edición de Usuario",
+      "detalles": "Se modificaron los datos del usuario: Lic. Manuel Henríquez Ureña.",
+      "fecha": "2026-07-07T02:48:13.155Z"
+    },
+    {
+      "id": "aud-1783392459276",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T02:47:39.276Z"
+    },
+    {
+      "id": "aud-1783390904522",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T02:21:44.522Z"
+    },
+    {
+      "id": "aud-1783390812961",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:20:12.961Z"
+    },
+    {
+      "id": "aud-1783390812880",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:20:12.880Z"
+    },
+    {
+      "id": "aud-1783390589883",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T02:16:29.883Z"
+    },
+    {
+      "id": "aud-1783390340258",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:20.258Z"
+    },
+    {
+      "id": "aud-1783390340086",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:20.086Z"
+    },
+    {
+      "id": "aud-1783390339962",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:19.962Z"
+    },
+    {
+      "id": "aud-1783390339848",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:19.848Z"
+    },
+    {
+      "id": "aud-1783390339066",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:19.066Z"
+    },
+    {
+      "id": "aud-1783390338870",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:18.870Z"
+    },
+    {
+      "id": "aud-1783390338707",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:18.707Z"
+    },
+    {
+      "id": "aud-1783390338103",
+      "usuario": "admin",
+      "accion": "Modificación de Datos Web",
+      "detalles": "Se actualizaron las secciones informativas y configuraciones del portal web.",
+      "fecha": "2026-07-07T02:12:18.103Z"
+    },
+    {
+      "id": "aud-1783390159186",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T02:09:19.186Z"
+    },
+    {
+      "id": "aud-1783388785302",
+      "usuario": "padre1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de padre.",
+      "fecha": "2026-07-07T01:46:25.302Z"
+    },
+    {
+      "id": "aud-1783388590250",
+      "usuario": "Lic. Manuel Henríquez Ureña",
+      "accion": "Edición de Noticia",
+      "detalles": "Se modificó la noticia: 'Ceremonia de Graduación Promoción LÍDERES 2026'.",
+      "fecha": "2026-07-07T01:43:10.250Z"
+    },
+    {
+      "id": "aud-1783388517806",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:57.806Z"
+    },
+    {
+      "id": "aud-1783388517633",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:57.633Z"
+    },
+    {
+      "id": "aud-1783388516221",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:56.221Z"
+    },
+    {
+      "id": "aud-1783388514198",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:54.198Z"
+    },
+    {
+      "id": "aud-1783388514002",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:54.002Z"
+    },
+    {
+      "id": "aud-1783388513823",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:53.823Z"
+    },
+    {
+      "id": "aud-1783388513670",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:53.670Z"
+    },
+    {
+      "id": "aud-1783388513506",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:53.506Z"
+    },
+    {
+      "id": "aud-1783388512706",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:52.706Z"
+    },
+    {
+      "id": "aud-1783388512117",
+      "usuario": "admin",
+      "accion": "Modificación de Configuración",
+      "detalles": "Se actualizaron las propiedades generales del centro escolar.",
+      "fecha": "2026-07-07T01:41:52.117Z"
+    },
+    {
+      "id": "aud-1783388420427",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T01:40:20.427Z"
+    },
+    {
+      "id": "aud-1783387504378",
+      "usuario": "estudiante1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de estudiante.",
+      "fecha": "2026-07-07T01:25:04.378Z"
+    },
+    {
+      "id": "aud-1783387446718",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Registro de Calificaciones",
+      "detalles": "Se actualizaron las notas de Juan Pablo Duarte Hijo en la asignatura con promedio 72.",
+      "fecha": "2026-07-07T01:24:06.718Z"
+    },
+    {
+      "id": "aud-1783387441906",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Registro de Calificaciones",
+      "detalles": "Se actualizaron las notas de Juan Pablo Duarte Hijo en la asignatura con promedio 69.",
+      "fecha": "2026-07-07T01:24:01.906Z"
+    },
+    {
+      "id": "aud-1783387438339",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Registro de Calificaciones",
+      "detalles": "Se actualizaron las notas de Juan Pablo Duarte Hijo en la asignatura con promedio 47.",
+      "fecha": "2026-07-07T01:23:58.339Z"
+    },
+    {
+      "id": "aud-1783387429553",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Registro de Calificaciones",
+      "detalles": "Se actualizaron las notas de Juan Pablo Duarte Hijo en la asignatura con promedio 24.",
+      "fecha": "2026-07-07T01:23:49.553Z"
+    },
+    {
+      "id": "aud-1783387421952",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Registro de Calificaciones",
+      "detalles": "Se actualizaron las notas de Juan Pablo Duarte Hijo en la asignatura con promedio 21.",
+      "fecha": "2026-07-07T01:23:41.952Z"
+    },
+    {
+      "id": "aud-1783387395540",
+      "usuario": "Prof. Carlos Sánchez",
+      "accion": "Pase de Asistencia",
+      "detalles": "Se registró la asistencia para 2 alumnos en la fecha 2026-07-07.",
+      "fecha": "2026-07-07T01:23:15.540Z"
+    },
+    {
+      "id": "aud-1783387368043",
+      "usuario": "profesor1",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de docente.",
+      "fecha": "2026-07-07T01:22:48.043Z"
+    },
+    {
+      "id": "aud-1783387360373",
+      "usuario": "profesor1",
+      "accion": "Fallo de Inicio de Sesión",
+      "detalles": "Intento fallido de inicio de sesión.",
+      "fecha": "2026-07-07T01:22:40.373Z"
+    },
+    {
+      "id": "aud-1783387302658",
+      "usuario": "admin",
+      "accion": "Restaurar Contraseña",
+      "detalles": "Se solicitó la restauración de contraseña para Lic. Manuel Henríquez Ureña.",
+      "fecha": "2026-07-07T01:21:42.658Z"
+    },
+    {
+      "id": "aud-1783387302414",
+      "usuario": "admin",
+      "accion": "Restaurar Contraseña",
+      "detalles": "Se solicitó la restauración de contraseña para Lic. Manuel Henríquez Ureña.",
+      "fecha": "2026-07-07T01:21:42.414Z"
+    },
+    {
+      "id": "aud-1783387301569",
+      "usuario": "admin",
+      "accion": "Restaurar Contraseña",
+      "detalles": "Se solicitó la restauración de contraseña para Lic. Manuel Henríquez Ureña.",
+      "fecha": "2026-07-07T01:21:41.569Z"
+    },
+    {
+      "id": "aud-1783387281604",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "Acceso concedido al rol de admin.",
+      "fecha": "2026-07-07T01:21:21.604Z"
+    },
+    {
+      "id": "aud-1783387268989",
+      "usuario": "admin",
+      "accion": "Fallo de Inicio de Sesión",
+      "detalles": "Intento fallido de inicio de sesión.",
+      "fecha": "2026-07-07T01:21:08.989Z"
+    },
+    {
+      "id": "aud-1",
+      "usuario": "admin",
+      "accion": "Inicio de Sesión",
+      "detalles": "El usuario admin inició sesión correctamente desde la dirección IP 127.0.0.1.",
+      "fecha": "2026-07-06T10:00:00Z"
+    },
+    {
+      "id": "aud-2",
+      "usuario": "admin",
+      "accion": "Modificar Configuración",
+      "detalles": "Actualización de números telefónicos de contacto institucional.",
+      "fecha": "2026-07-06T10:15:00Z"
+    }
+  ],
+  "landingData": {
+    "hero": {
+      "slides": [
+        {
+          "image": "https://media.acento.com.do/media/storage02/uploads/2022/08/liceo-juan-pablo-duarte-en-el-distrito-nacional.webp",
+          "title": "Liceo de Prestigio y Excelencia Académica",
+          "subtitle": "Educamos para el futuro con raíces firmes en los valores de nuestra patria."
+        },
+        {
+          "image": "https://revistaquisqueya.com/wp-content/uploads/2026/05/image-959-1024x685.png",
+          "title": "Formación de Líderes Integrales",
+          "subtitle": "Fomentamos el deporte, el arte y la cultura cívica en un entorno de primer nivel."
+        }
+      ]
+    },
+    "aboutUs": {
+      "title": "Nuestra Institución",
+      "subtitle": "Formación con Rigor Académico y Conciencia Ciudadana",
+      "whoWeAre": "Fundado con la firme convicción de proveer una formación del más alto nivel, el Centro Educativo Juan Pablo Duarte conjuga las corrientes psicopedagógicas más innovadoras con el fomento del patriotismo dominicano. Nos dedicamos a guiar a niños, niñas y jóvenes por una ruta de excelencia integral que les permita destacar a nivel internacional sin perder su arraigo cultural.",
+      "philosophy": "El verdadero conocimiento sirve a la patria y promueve la libertad de pensamiento. Forjamos el carácter tanto como el intelecto.",
+      "mission": "Proveer una educación integral, innovadora y de calidad que promueva el desarrollo del pensamiento crítico, las habilidades científicas y el fomento de valores cívicos y patrióticos, formando ciudadanos comprometidos con el desarrollo nacional.",
+      "vision": "Ser reconocidos a nivel nacional e internacional como un centro educativo modelo por nuestra excelencia académica, el uso de tecnologías aplicadas, y la sólida formación ética de nuestros egresados, líderes de la sociedad dominicana.",
+      "history": "Fundado en honor a nuestro prócer de la patria Juan Pablo Duarte, nacimos como una respuesta académica a la demanda de excelencia en Santo Domingo. Con el paso de los años, hemos ampliado nuestras instalaciones e integrado metodologías STEAM modernas.",
+      "directorName": "Dra. Altagracia Mercedes",
+      "directorRole": "Directora General / Ph.D en Educación",
+      "directorPhoto": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      "directorMsg": "Estimada comunidad educativa duartiana, nos honra darles la bienvenida a este espacio virtual. Nuestra labor diaria se fundamenta en un compromiso irrenunciable con la excelencia. En estas aulas, sus hijos no solo adquieren habilidades STEAM o lingüísticas avanzadas; cultivan el respeto, la templanza y la convicción de ser ciudadanos transformadores de la República Dominicana.",
+      "values": [
+        {
+          "name": "Patriotismo",
+          "desc": "Inculcamos el amor a los símbolos patrios, a la historia nacional y al legado de Juan Pablo Duarte."
+        },
+        {
+          "name": "Excelencia",
+          "desc": "Buscamos el máximo rendimiento académico e intelectual a través de la disciplina y la innovación."
+        },
+        {
+          "name": "Integridad",
+          "desc": "Formamos ciudadanos con firmes principios éticos, honradez y responsabilidad social."
+        },
+        {
+          "name": "Innovación",
+          "desc": "Abrazamos metodologías modernas, ciencias computacionales y aprendizaje STEAM."
+        }
+      ]
+    },
+    "studentLife": {
+      "title": "Vida Estudiantil",
+      "subtitle": "Descubre tus Pasiones y Desarrolla tus Talentos",
+      "activities": [
+        {
+          "id": "act-1",
+          "title": "Club de Robótica y Tecnología",
+          "description": "Formación en programación, electrónica y diseño 3D. Nuestros estudiantes construyen prototipos y participan en torneos nacionales.",
+          "image": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&auto=format&fit=crop&q=80",
+          "category": "STEAM"
+        },
+        {
+          "id": "act-2",
+          "title": "Arte, Teatro y Música",
+          "description": "Coro institucional, clases de violín, artes visuales y club dramático. Fomentamos la sensibilidad artística y la expresión libre.",
+          "image": "https://images.unsplash.com/photo-1460723237483-7a6dc9d0b212?w=600&auto=format&fit=crop&q=80",
+          "category": "Cultura"
+        },
+        {
+          "id": "act-3",
+          "title": "Deportes de Alto Rendimiento",
+          "description": "Instalaciones para Baloncesto, Voleibol, Fútbol y Ajedrez. Equipos competitivos con entrenadores certificados de la federación.",
+          "image": "https://images.unsplash.com/photo-1546519638-68e109498ffc?w=600&auto=format&fit=crop&q=80",
+          "category": "Salud"
+        }
+      ],
+      "patrioticTitle": "Actividades Cívicas y Patrióticas",
+      "patrioticDesc": "Cada lunes iniciamos el día con el izamiento solemne de la bandera y el canto del Himno Nacional. Organizamos conferencias históricas, representaciones cívicas y conmemoraciones de los Padres de la Patria para cimentar el amor y orgullo dominicano en cada alumno.",
+      "nextEventTitle": "Tributo a los Próceres",
+      "nextEventDate": "Lunes 16 de Julio, 07:45 AM"
+    },
+    "governance": {
+      "title": "Órganos Institucionales",
+      "subtitle": "Democracia, Participación y Co-Gestión",
+      "organs": [
+        {
+          "id": "org-1",
+          "title": "Consejo Estudiantil",
+          "desc": "Máximo órgano de representación de los estudiantes. Vela por la sana convivencia, la defensa de los derechos estudiantiles y la organización de actividades culturales y cívicas.",
+          "funcs": [
+            "Canalizar inquietudes estudiantiles ante la dirección.",
+            "Organizar torneos deportivos e iniciativas solidarias.",
+            "Colaborar en las comisiones de disciplina y mediación de conflictos."
+          ],
+          "integrantes": "Presidente: Juan Pablo Duarte Hijo; Vicepresidenta: Camila Almonte; Secretaria: Sofía Bello."
+        },
+        {
+          "id": "org-2",
+          "title": "Consejo de Padres, Madres y Tutores (APMAE)",
+          "desc": "Asociación que promueve la integración activa y coordinada de los representantes legales en las directrices de mejora pedagógica y comunitaria del liceo.",
+          "funcs": [
+            "Apoyar planes de desarrollo y mantenimiento de infraestructura.",
+            "Garantizar canales de comunicación fluidos entre el hogar y el centro.",
+            "Organizar charlas formativas para padres (Escuela para Padres)."
+          ],
+          "integrantes": "Presidente: Sr. Marcos Duarte; Tesorera: Sra. Sofía Almonte; Vocal: Sra. Clara Martínez."
+        },
+        {
+          "id": "org-3",
+          "title": "Gobierno Escolar",
+          "desc": "Instancia representativa democrática que fomenta los liderazgos, simulando los procesos cívicos de la República Dominicana para inculcar civismo y respeto al orden constitucional.",
+          "funcs": [
+            "Celebrar elecciones escolares anuales con supervisión de la Junta Central Electoral.",
+            "Presentar planes anuales de mejora de convivencia.",
+            "Gestionar el presupuesto de proyectos estudiantiles."
+          ],
+          "integrantes": "Gobernador Escolar: Estudiante Juan Pablo Duarte Hijo; Vicegobernadora: Camila Almonte."
+        }
+      ]
+    },
+    "admissions": {
+      "title": "Únete a Nuestra Familia Educativa",
+      "subtitle": "Descubra las pautas necesarias para iniciar el proceso de inscripción y asegurar el porvenir académico de su hijo en el centro con mayor prestigio de Santo Domingo.",
+      "requirements": [
+        "Acta de Nacimiento original y certificada.",
+        "Récord de calificaciones del último año escolar (firmado y sellado).",
+        "Carta de conducta del centro educativo de procedencia.",
+        "Certificado médico oficial actualizado (con firma y exequátur).",
+        "Dos (2) fotos tamaño 2x2 del estudiante.",
+        "Copia de la cédula de identidad de ambos padres o tutores legales."
+      ],
+      "faqs": [
+        {
+          "q": "¿Cuándo inicia el proceso de admisiones para el nuevo ciclo?",
+          "a": "El proceso inicia formalmente en marzo de cada año y cierra al agotarse el cupo disponible de las respectivas aulas para garantizar un límite óptimo por salón."
+        },
+        {
+          "q": "¿Tienen facilidades de pago para familias con múltiples hijos?",
+          "a": "Sí, contamos con un plan especial de descuentos corporativos y familiares: 10% de descuento en la matrícula del segundo hijo y un 15% a partir del tercer hijo inscrito."
+        },
+        {
+          "q": "¿Cuál es el costo de la evaluación de admisión?",
+          "a": "La prueba diagnóstica y psicopedagógica tiene un costo único no reembolsable de RD$1,500, el cual se liquida el día de la cita evaluativa."
+        },
+        {
+          "q": "¿Ofrecen becas por excelencia académica o deportiva?",
+          "a": "Sí, anualmente el Consejo de Directores otorga becas parciales y completas a estudiantes sobresalientes que califiquen en nuestras convocatorias de honores."
+        }
+      ]
+    },
+    "attachments": [
+      {
+        "id": "att-brochure",
+        "title": "Brochure Institucional 2026",
+        "url": "https://uasd.edu.do/comision-reforma-uasd/wp-content/uploads/2023/11/1.-REGLAMENTO-DEL-CONSEJO-UNIVERSITARIO.pdf",
+        "date": "2026-07-01",
+        "type": "Documento"
+      },
+      {
+        "id": "att-calendario",
+        "title": "Calendario Escolar Oficial",
+        "url": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+        "date": "2026-07-02",
+        "type": "Calendario"
+      }
+    ]
+  }
+}

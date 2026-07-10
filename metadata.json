@@ -1,0 +1,8 @@
+{
+  "name": "Centro Educativo Juan Pablo Duarte",
+  "description": "Sitio web institucional y plataforma de gestión académica integral (ERP/CRM) para el Centro Educativo Juan Pablo Duarte de República Dominicana.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

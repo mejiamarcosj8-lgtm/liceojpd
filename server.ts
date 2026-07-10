@@ -9,8 +9,96 @@ import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 dotenv.config();
+
+// Read firebase-applet-config.json
+const firebaseConfigPath = path.join(process.cwd(), "firebase-applet-config.json");
+let firebaseApp: any = null;
+let firestoreDb: any = null;
+
+if (fs.existsSync(firebaseConfigPath)) {
+  try {
+    const configData = JSON.parse(fs.readFileSync(firebaseConfigPath, "utf-8"));
+    firebaseApp = initializeApp({
+      apiKey: configData.apiKey,
+      authDomain: configData.authDomain,
+      projectId: configData.projectId,
+      storageBucket: configData.storageBucket,
+      messagingSenderId: configData.messagingSenderId,
+      appId: configData.appId
+    });
+    // Initialize Firestore with custom database ID
+    const dbId = configData.firestoreDatabaseId || "(default)";
+    firestoreDb = getFirestore(firebaseApp, dbId);
+    console.log("Firebase Firestore initialized successfully with Project ID:", configData.projectId, "Database ID:", dbId);
+  } catch (err) {
+    console.error("Failed to initialize Firebase:", err);
+  }
+}
+
+// Global in-memory cache of the database
+let cachedDb: any = null;
+
+const FIRESTORE_KEYS = [
+  "config",
+  "users",
+  "courses",
+  "subjects",
+  "grades",
+  "attendance",
+  "tasks",
+  "news",
+  "events",
+  "auditLogs",
+  "landingData",
+  "observations",
+  "citations",
+  "suggestions"
+];
+
+async function syncFromFirestore() {
+  if (!firestoreDb) return;
+  console.log("Starting full sync from Cloud Firestore...");
+  const db = loadDb(); // load from local json first to get fallback or existing structure
+  
+  for (const key of FIRESTORE_KEYS) {
+    try {
+      const docRef = doc(firestoreDb, "liceo_data", key);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const cloudData = docSnap.data();
+        if (cloudData && cloudData.value !== undefined) {
+          db[key] = cloudData.value;
+        }
+      } else {
+        // First-time upload: write current local state of this key to Firestore
+        console.log(`Document for key '${key}' does not exist in Firestore. Seeding from local database...`);
+        const localValue = db[key] !== undefined ? db[key] : (defaultDb[key] || []);
+        await setDoc(docRef, { value: localValue });
+      }
+    } catch (err) {
+      console.error(`Error syncing key '${key}' from Firestore:`, err);
+    }
+  }
+  
+  // Save merged state back to cachedDb and local file
+  cachedDb = db;
+  fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf-8");
+  console.log("Full sync from Cloud Firestore completed successfully.");
+}
+
+async function saveToFirestore(key: string, value: any) {
+  if (!firestoreDb) return;
+  try {
+    const docRef = doc(firestoreDb, "liceo_data", key);
+    await setDoc(docRef, { value });
+  } catch (err) {
+    console.error(`Error saving key '${key}' to Firestore:`, err);
+  }
+}
 
 // Initialize Express
 const app = express();
@@ -495,6 +583,9 @@ const defaultDb = {
 
 // Ensure database file exists
 function loadDb() {
+  if (cachedDb) {
+    return cachedDb;
+  }
   try {
     const officialSubjectList = [
       { name: "Lengua Española", suffix: "leng", defaultDocente: "usr-doc2" },
@@ -507,115 +598,74 @@ function loadDb() {
       { name: "Educación Artística", suffix: "art", defaultDocente: "usr-doc3" }
     ];
 
+    let db: any;
     if (fs.existsSync(DB_FILE)) {
       const data = fs.readFileSync(DB_FILE, "utf-8");
-      const db = JSON.parse(data);
-      let updated = false;
-
-      if (!db.landingData) {
-        db.landingData = defaultDb.landingData;
-        updated = true;
-      }
-
-      if (!db.observations) {
-        db.observations = [];
-        updated = true;
-      }
-
-      if (!db.citations) {
-        db.citations = [];
-        updated = true;
-      }
-
-      if (db.users && Array.isArray(db.users)) {
-        const hasRegistro = db.users.some((u: any) => u.role === 'registro' || u.username === 'registro');
-        if (!hasRegistro) {
-          db.users.push({
-            id: "usr-registro1",
-            username: "registro",
-            nombreCompleto: "Licda. Mercedes Peña",
-            role: "registro",
-            correo: "m.pena@liceojuanpabloduarte.edu.do",
-            telefono: "809-555-1003",
-            fotografia: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
-            activo: true,
-            biografia: "Encargada de Registro del Centro Educativo Juan Pablo Duarte. Responsable de velar por la integridad y validez de las actas y reportes oficiales de asistencia y rendimiento."
-          });
-          updated = true;
-        }
-
-        const hasOrientacion = db.users.some((u: any) => u.role === 'orientacion' || u.username === 'orientacion');
-        if (!hasOrientacion) {
-          db.users.push({
-            id: "usr-orientadora",
-            username: "orientacion",
-            nombreCompleto: "Licda. Clara Luz Cabrera",
-            role: "orientacion",
-            correo: "c.cabrera@liceojuanpabloduarte.edu.do",
-            telefono: "809-555-1004",
-            fotografia: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
-            activo: true,
-            biografia: "Orientadora y Psicóloga Escolar. Responsable de brindar apoyo psicopedagógico, conductual y de mediación familiar."
-          });
-          updated = true;
-        }
-      }
-
-      // Rebuild and enforce exactly 8 official subjects per course to avoid missing ones in grades/assignments
-      if (db.courses && Array.isArray(db.courses)) {
-        const newSubjects: any[] = [];
-        db.courses.forEach((course: any) => {
-          officialSubjectList.forEach((subj) => {
-            let id = `sbj-${course.id}-${subj.suffix}`;
-            if (course.id === "crs-6a" || course.id === "crs-3a" || course.id === "crs-3b") {
-              if (subj.suffix === "mat") id = "sbj-mat6";
-              else if (subj.suffix === "leng") id = "sbj-leng6";
-              else if (subj.suffix === "soc") id = "sbj-soc6";
-              else id = `sbj-${course.id}-${subj.suffix}`;
-            }
-            newSubjects.push({
-              id,
-              nombre: subj.name,
-              cursoId: course.id,
-              docenteId: subj.defaultDocente
-            });
-          });
-        });
-        db.subjects = newSubjects;
-        updated = true;
-      }
-
-      // Normalize pre-existing grades/attendance/tasks names to official names
-      if (db.grades) {
-        db.grades.forEach((g: any) => {
-          if (g.materiaNombre && g.materiaNombre.includes("Matemática")) g.materiaNombre = "Matemática";
-          if (g.materiaNombre && g.materiaNombre.includes("Lengua Española")) g.materiaNombre = "Lengua Española";
-          if (g.materiaNombre && g.materiaNombre.includes("Ciencias Sociales")) g.materiaNombre = "Ciencias Sociales";
-        });
-      }
-      if (db.attendance) {
-        db.attendance.forEach((a: any) => {
-          if (a.materiaNombre && a.materiaNombre.includes("Matemática")) a.materiaNombre = "Matemática";
-          if (a.materiaNombre && a.materiaNombre.includes("Lengua Española")) a.materiaNombre = "Lengua Española";
-          if (a.materiaNombre && a.materiaNombre.includes("Ciencias Sociales")) a.materiaNombre = "Ciencias Sociales";
-        });
-      }
-      if (db.tasks) {
-        db.tasks.forEach((t: any) => {
-          if (t.materiaNombre && t.materiaNombre.includes("Matemática")) t.materiaNombre = "Matemática";
-          if (t.materiaNombre && t.materiaNombre.includes("Lengua Española")) t.materiaNombre = "Lengua Española";
-          if (t.materiaNombre && t.materiaNombre.includes("Ciencias Sociales")) t.materiaNombre = "Ciencias Sociales";
-        });
-      }
-
-      if (updated) {
-        fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf-8");
-      }
-      return db;
+      db = JSON.parse(data);
     } else {
-      // Rebuild subjects list in defaultDb first
-      const defaultSubjects: any[] = [];
-      defaultDb.courses.forEach((course: any) => {
+      db = JSON.parse(JSON.stringify(defaultDb));
+    }
+
+    let updated = false;
+
+    if (!db.landingData) {
+      db.landingData = defaultDb.landingData;
+      updated = true;
+    }
+
+    if (!db.observations) {
+      db.observations = [];
+      updated = true;
+    }
+
+    if (!db.citations) {
+      db.citations = [];
+      updated = true;
+    }
+
+    if (!db.suggestions) {
+      db.suggestions = [];
+      updated = true;
+    }
+
+    if (db.users && Array.isArray(db.users)) {
+      const hasRegistro = db.users.some((u: any) => u.role === 'registro' || u.username === 'registro');
+      if (!hasRegistro) {
+        db.users.push({
+          id: "usr-registro1",
+          username: "registro",
+          nombreCompleto: "Licda. Mercedes Peña",
+          role: "registro",
+          correo: "m.pena@liceojuanpabloduarte.edu.do",
+          telefono: "809-555-1003",
+          fotografia: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+          activo: true,
+          biografia: "Encargada de Registro del Centro Educativo Juan Pablo Duarte. Responsable de velar por la integridad y validez de las actas y reportes oficiales de asistencia y rendimiento."
+        });
+        updated = true;
+      }
+
+      const hasOrientacion = db.users.some((u: any) => u.role === 'orientacion' || u.username === 'orientacion');
+      if (!hasOrientacion) {
+        db.users.push({
+          id: "usr-orientadora",
+          username: "orientacion",
+          nombreCompleto: "Licda. Clara Luz Cabrera",
+          role: "orientacion",
+          correo: "c.cabrera@liceojuanpabloduarte.edu.do",
+          telefono: "809-555-1004",
+          fotografia: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+          activo: true,
+          biografia: "Orientadora y Psicóloga Escolar. Responsable de brindar apoyo psicopedagógico, conductual y de mediación familiar."
+        });
+        updated = true;
+      }
+    }
+
+    // Rebuild and enforce exactly 8 official subjects per course to avoid missing ones in grades/assignments
+    if (db.courses && Array.isArray(db.courses)) {
+      const newSubjects: any[] = [];
+      db.courses.forEach((course: any) => {
         officialSubjectList.forEach((subj) => {
           let id = `sbj-${course.id}-${subj.suffix}`;
           if (course.id === "crs-6a" || course.id === "crs-3a" || course.id === "crs-3b") {
@@ -624,7 +674,7 @@ function loadDb() {
             else if (subj.suffix === "soc") id = "sbj-soc6";
             else id = `sbj-${course.id}-${subj.suffix}`;
           }
-          defaultSubjects.push({
+          newSubjects.push({
             id,
             nombre: subj.name,
             cursoId: course.id,
@@ -632,20 +682,64 @@ function loadDb() {
           });
         });
       });
-      defaultDb.subjects = defaultSubjects;
-
-      fs.writeFileSync(DB_FILE, JSON.stringify(defaultDb, null, 2), "utf-8");
-      return defaultDb;
+      db.subjects = newSubjects;
+      updated = true;
     }
+
+    // Normalize pre-existing grades/attendance/tasks names to official names
+    if (db.grades) {
+      db.grades.forEach((g: any) => {
+        if (g.materiaNombre && g.materiaNombre.includes("Matemática")) g.materiaNombre = "Matemática";
+        if (g.materiaNombre && g.materiaNombre.includes("Lengua Española")) g.materiaNombre = "Lengua Española";
+        if (g.materiaNombre && g.materiaNombre.includes("Ciencias Sociales")) g.materiaNombre = "Ciencias Sociales";
+      });
+    }
+    if (db.attendance) {
+      db.attendance.forEach((a: any) => {
+        if (a.materiaNombre && a.materiaNombre.includes("Matemática")) a.materiaNombre = "Matemática";
+        if (a.materiaNombre && a.materiaNombre.includes("Lengua Española")) a.materiaNombre = "Lengua Española";
+        if (a.materiaNombre && a.materiaNombre.includes("Ciencias Sociales")) a.materiaNombre = "Ciencias Sociales";
+      });
+    }
+    if (db.tasks) {
+      db.tasks.forEach((t: any) => {
+        if (t.materiaNombre && t.materiaNombre.includes("Matemática")) t.materiaNombre = "Matemática";
+        if (t.materiaNombre && t.materiaNombre.includes("Lengua Española")) t.materiaNombre = "Lengua Española";
+        if (t.materiaNombre && t.materiaNombre.includes("Ciencias Sociales")) t.materiaNombre = "Ciencias Sociales";
+      });
+    }
+
+    if (updated) {
+      fs.writeFileSync(DB_FILE, JSON.stringify(db, null, 2), "utf-8");
+    }
+
+    cachedDb = db;
+    return db;
   } catch (error) {
     console.error("Error loading database, returning default:", error);
     return defaultDb;
   }
 }
 
-function saveDb(data: typeof defaultDb) {
+function saveDb(data: any) {
   try {
+    // 1. Save to local disk cache
     fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+    
+    // 2. Identify and sync changes to Firestore asynchronously
+    if (firestoreDb) {
+      const oldDb = cachedDb || {};
+      for (const key of FIRESTORE_KEYS) {
+        const oldValueStr = JSON.stringify(oldDb[key]);
+        const newValueStr = JSON.stringify(data[key]);
+        if (oldValueStr !== newValueStr) {
+          saveToFirestore(key, data[key]);
+        }
+      }
+    }
+    
+    // 3. Update memory cache
+    cachedDb = JSON.parse(JSON.stringify(data));
   } catch (error) {
     console.error("Error saving database:", error);
   }
@@ -1526,6 +1620,14 @@ app.post("/api/suggestions/submit", (req, res) => {
 
 // Serve frontend assets
 async function startServer() {
+  if (firestoreDb) {
+    try {
+      await syncFromFirestore();
+    } catch (err) {
+      console.error("Error during startup Firestore sync:", err);
+    }
+  }
+
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },

@@ -81,6 +81,7 @@ async function syncFromFirestore() {
       }
     } catch (err) {
       console.error(`Error syncing key '${key}' from Firestore:`, err);
+      throw err;
     }
   }
   
@@ -764,6 +765,36 @@ function logAction(usuario: string, accion: string, detalles: string) {
 }
 
 // REST API Endpoints
+
+// 0. Firebase Status & Manual Sync Endpoints
+app.get("/api/admin/db-status", (req, res) => {
+  if (fs.existsSync(firebaseConfigPath)) {
+    try {
+      const configData = JSON.parse(fs.readFileSync(firebaseConfigPath, "utf-8"));
+      return res.json({
+        enabled: true,
+        projectId: configData.projectId,
+        databaseId: configData.firestoreDatabaseId || "(default)"
+      });
+    } catch (err) {
+      return res.json({ enabled: false, error: "Error leyendo configuración" });
+    }
+  }
+  res.json({ enabled: false });
+});
+
+app.post("/api/admin/db-sync", async (req, res) => {
+  if (!firestoreDb) {
+    return res.status(400).json({ success: false, error: "Firebase no está inicializado en el servidor." });
+  }
+  try {
+    await syncFromFirestore();
+    res.json({ success: true });
+  } catch (err: any) {
+    console.error("Manual sync failed:", err);
+    res.status(500).json({ success: false, error: err.message || String(err) });
+  }
+});
 
 // 1. Auth Endpoint
 app.post("/api/auth/login", (req, res) => {

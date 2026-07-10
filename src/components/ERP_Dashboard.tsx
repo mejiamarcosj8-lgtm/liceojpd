@@ -88,6 +88,11 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
 
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' | 'info' } | null>(null);
 
+  // Firestore database states
+  const [firestoreStatus, setFirestoreStatus] = useState<{ enabled: boolean; projectId?: string; databaseId?: string; error?: string } | null>(null);
+  const [isSyncingFirestore, setIsSyncingFirestore] = useState<boolean>(false);
+  const [firestoreSyncError, setFirestoreSyncError] = useState<string | null>(null);
+
   const showNotification = (message: string, type: 'success' | 'error' | 'info' = 'success') => {
     setNotification({ message, type });
     setTimeout(() => {
@@ -281,6 +286,12 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
         setWebContent(data);
         setWebLoading(false);
       });
+
+    // Fetch Firestore connection status
+    fetch('/api/admin/db-status')
+      .then(res => res.json())
+      .then(setFirestoreStatus)
+      .catch(err => console.error("Error fetching db status:", err));
   };
 
   // Automatically select first child if user is a parent
@@ -659,6 +670,30 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
         } else {
           showNotification('Error al guardar la configuración.', 'error');
         }
+      });
+  };
+
+  const handleSyncFirestore = () => {
+    setIsSyncingFirestore(true);
+    setFirestoreSyncError(null);
+    fetch('/api/admin/db-sync', { method: 'POST' })
+      .then(async (res) => {
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showNotification('¡Sincronización con Firestore exitosa! Todos los datos han sido respaldados.', 'success');
+          syncData();
+        } else {
+          setFirestoreSyncError(data.error || 'Error de permisos o conexión al sincronizar con Firestore.');
+          showNotification('Error al sincronizar con Firestore.', 'error');
+        }
+      })
+      .catch((err) => {
+        console.error("Firestore sync error:", err);
+        setFirestoreSyncError(err.message || String(err));
+        showNotification('Error de conexión con el servidor.', 'error');
+      })
+      .finally(() => {
+        setIsSyncingFirestore(false);
       });
   };
 
@@ -2828,6 +2863,108 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
                 </button>
               </div>
             </form>
+
+            {/* Panel de Sincronización con Firestore / Firebase */}
+            {firestoreStatus && firestoreStatus.enabled && (
+              <div className="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8 space-y-6">
+                <div className="border-b border-neutral-800 pb-4">
+                  <div className="flex items-center space-x-2">
+                    <span className="h-3.5 w-3.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                    <h3 className="text-sm font-display font-bold text-[#D4AF37] uppercase tracking-wider">Base de Datos Firestore (Firebase)</h3>
+                  </div>
+                  <p className="text-[11px] text-neutral-500 font-light mt-1">
+                    Su sistema escolar cuenta con un respaldo en tiempo real en la nube de Google Cloud Firestore.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-bold block">Proyecto de Google Cloud</span>
+                      <span className="text-xs font-mono font-bold text-white bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 block select-all">{firestoreStatus.projectId}</span>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-bold block">ID de la Base de Datos</span>
+                      <span className="text-xs font-mono font-bold text-white bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-2 block select-all">{firestoreStatus.databaseId}</span>
+                    </div>
+                  </div>
+
+                  <div className="bg-neutral-900/40 border border-neutral-800 p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div className="space-y-1">
+                      <span className="text-xs font-bold text-neutral-200 block">Sincronización Manual Escolar</span>
+                      <p className="text-[11px] text-neutral-400 font-light leading-relaxed">
+                        Si realizó cambios manuales o desea forzar una copia de seguridad local hacia Firestore ahora mismo, presione el botón de sincronización.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      disabled={isSyncingFirestore}
+                      onClick={handleSyncFirestore}
+                      className="w-full bg-[#5A2D1A] hover:bg-[#7D4229] disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center space-x-2"
+                    >
+                      {isSyncingFirestore ? (
+                        <>
+                          <span className="animate-spin inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                          <span>Sincronizando Base de Datos...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4.5 w-4.5 text-[#D4AF37]" />
+                          <span>Sincronizar ahora con Firestore</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Warning message if sync failed */}
+                {firestoreSyncError && (
+                  <div className="bg-red-950/40 border border-red-900 rounded-2xl p-5 space-y-4 text-xs">
+                    <div className="flex items-start space-x-3 text-red-400 font-bold">
+                      <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <span>FALLÓ LA SINCRONIZACIÓN CON FIRESTORE</span>
+                        <p className="text-[11px] text-red-300/80 font-normal leading-relaxed">
+                          Detalle del error: <code className="font-mono bg-red-950 px-1.5 py-0.5 rounded text-white">{firestoreSyncError}</code>
+                        </p>
+                      </div>
+                    </div>
+
+                    {(firestoreSyncError.toLowerCase().includes('permission') || 
+                      firestoreSyncError.toLowerCase().includes('reglas') ||
+                      firestoreSyncError.toLowerCase().includes('denied')) && (
+                      <div className="bg-neutral-950/50 border border-neutral-900 p-4 rounded-xl space-y-3 font-normal text-neutral-300 leading-relaxed">
+                        <span className="font-bold text-[#D4AF37] block">⚠️ PASOS DE RESOLUCIÓN DE REGLAS DE FIREBASE:</span>
+                        <p className="text-[11px] font-light">
+                          Su base de datos en Google Cloud por defecto tiene las reglas de seguridad bloqueadas (locked). Para permitir la sincronización inicial, por favor siga estos sencillos pasos:
+                        </p>
+                        <ol className="list-decimal pl-5 space-y-1.5 text-[11px] font-light">
+                          <li>Abra su consola de Firebase para el proyecto <strong className="text-white font-mono">{firestoreStatus.projectId}</strong>.</li>
+                          <li>Vaya a la sección de <strong className="text-white">Firestore Database</strong> en el panel izquierdo.</li>
+                          <li>Seleccione la base de datos <strong className="text-white font-mono">{firestoreStatus.databaseId}</strong> del menú desplegable superior.</li>
+                          <li>Haga clic en la pestaña de <strong className="text-white">Reglas (Rules)</strong>.</li>
+                          <li>Reemplace el contenido por las siguientes reglas abiertas para la migración:
+                            <pre className="bg-neutral-900 border border-neutral-800 text-neutral-200 p-2.5 rounded-lg font-mono text-[10px] mt-1 overflow-x-auto select-all">
+{`rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}`}
+                            </pre>
+                          </li>
+                          <li>Haga clic en el botón azul <strong className="text-white">Publicar (Publish)</strong>.</li>
+                          <li>Una vez publicado, regrese aquí y presione el botón <strong className="text-[#D4AF37]">Sincronizar ahora con Firestore</strong> para cargar automáticamente las cuentas de estudiantes, profesores, cursos y notas.</li>
+                        </ol>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 

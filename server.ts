@@ -585,7 +585,7 @@ const defaultDb = {
 // Ensure database file exists
 function loadDb() {
   if (cachedDb) {
-    return cachedDb;
+    return JSON.parse(JSON.stringify(cachedDb));
   }
   try {
     const officialSubjectList = [
@@ -715,10 +715,10 @@ function loadDb() {
     }
 
     cachedDb = db;
-    return db;
+    return JSON.parse(JSON.stringify(db));
   } catch (error) {
     console.error("Error loading database, returning default:", error);
-    return defaultDb;
+    return JSON.parse(JSON.stringify(defaultDb));
   }
 }
 

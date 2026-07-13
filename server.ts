@@ -295,11 +295,13 @@ const defaultDb = {
       estudianteId: "usr-stud1",
       materiaId: "sbj-mat6",
       materiaNombre: "Matemática VI",
-      p1: 85,
-      p2: 90,
-      p3: 88,
-      p4: 92,
-      promedio: 89,
+      comp1_p1: 85, comp1_p2: 90, comp1_p3: 88, comp1_p4: 92,
+      comp2_p1: 80, comp2_p2: 85, comp2_p3: 87, comp2_p4: 88,
+      comp3_p1: 88, comp3_p2: 92, comp3_p3: 90, comp3_p4: 94,
+      comp4_p1: 84, comp4_p2: 86, comp4_p3: 85, comp4_p4: 89,
+      pc1: 89, pc2: 85, pc3: 91, pc4: 86,
+      p1: 84, p2: 87, p3: 88, p4: 91,
+      promedio: 88,
       estado: "Aprobado",
       observaciones: "Excelente desempeño y puntualidad en entregas.",
       updatedAt: "2026-06-15"
@@ -309,10 +311,12 @@ const defaultDb = {
       estudianteId: "usr-stud1",
       materiaId: "sbj-leng6",
       materiaNombre: "Lengua Española VI",
-      p1: 92,
-      p2: 95,
-      p3: 94,
-      p4: 96,
+      comp1_p1: 92, comp1_p2: 95, comp1_p3: 94, comp1_p4: 96,
+      comp2_p1: 90, comp2_p2: 94, comp2_p3: 92, comp2_p4: 95,
+      comp3_p1: 88, comp3_p2: 91, comp3_p3: 93, comp3_p4: 92,
+      comp4_p1: 95, comp4_p2: 96, comp4_p3: 95, comp4_p4: 97,
+      pc1: 94, pc2: 93, pc3: 91, pc4: 96,
+      p1: 91, p2: 94, p3: 94, p4: 95,
       promedio: 94,
       estado: "Aprobado",
       observaciones: "Gran orador e increíble redacción de ensayos.",
@@ -323,10 +327,12 @@ const defaultDb = {
       estudianteId: "usr-stud1",
       materiaId: "sbj-soc6",
       materiaNombre: "Ciencias Sociales VI",
-      p1: 90,
-      p2: 88,
-      p3: 91,
-      p4: 93,
+      comp1_p1: 90, comp1_p2: 88, comp1_p3: 91, comp1_p4: 93,
+      comp2_p1: 88, comp2_p2: 85, comp2_p3: 89, comp2_p4: 91,
+      comp3_p1: 92, comp3_p2: 90, comp3_p3: 91, comp3_p4: 94,
+      comp4_p1: 94, comp4_p2: 92, comp4_p3: 93, comp4_p4: 95,
+      pc1: 91, pc2: 88, pc3: 92, pc4: 94,
+      p1: 91, p2: 89, p3: 91, p4: 93,
       promedio: 91,
       estado: "Aprobado",
       observaciones: "Dominio excepcional de la historia dominicana.",
@@ -338,11 +344,13 @@ const defaultDb = {
       estudianteId: "usr-stud2",
       materiaId: "sbj-mat6",
       materiaNombre: "Matemática VI",
-      p1: 72,
-      p2: 78,
-      p3: 80,
-      p4: 85,
-      promedio: 79,
+      comp1_p1: 72, comp1_p2: 78, comp1_p3: 80, comp1_p4: 85,
+      comp2_p1: 70, comp2_p2: 75, comp2_p3: 78, comp2_p4: 82,
+      comp3_p1: 75, comp3_p2: 80, comp3_p3: 82, comp3_p4: 86,
+      comp4_p1: 78, comp4_p2: 82, comp4_p3: 84, comp4_p4: 88,
+      pc1: 79, pc2: 76, pc3: 81, pc4: 83,
+      p1: 74, p2: 79, p3: 81, p4: 85,
+      promedio: 80,
       estado: "Aprobado",
       observaciones: "Muestra gran esfuerzo y mejora continua.",
       updatedAt: "2026-06-15"
@@ -352,11 +360,13 @@ const defaultDb = {
       estudianteId: "usr-stud2",
       materiaId: "sbj-leng6",
       materiaNombre: "Lengua Española VI",
-      p1: 88,
-      p2: 85,
-      p3: 90,
-      p4: 87,
-      promedio: 88,
+      comp1_p1: 88, comp1_p2: 85, comp1_p3: 90, comp1_p4: 87,
+      comp2_p1: 85, comp2_p2: 82, comp2_p3: 88, comp2_p4: 85,
+      comp3_p1: 82, comp3_p2: 80, comp3_p3: 85, comp3_p4: 84,
+      comp4_p1: 90, comp4_p2: 88, comp4_p3: 92, comp4_p4: 90,
+      pc1: 88, pc2: 85, pc3: 83, pc4: 90,
+      p1: 86, p2: 84, p3: 89, p4: 87,
+      promedio: 87,
       estado: "Aprobado",
       observaciones: "Muy participativa en debates literarios.",
       updatedAt: "2026-06-16"
@@ -366,11 +376,13 @@ const defaultDb = {
       estudianteId: "usr-stud2",
       materiaId: "sbj-soc6",
       materiaNombre: "Ciencias Sociales VI",
-      p1: 82,
-      p2: 85,
-      p3: 86,
-      p4: 88,
-      promedio: 85,
+      comp1_p1: 82, comp1_p2: 85, comp1_p3: 86, comp1_p4: 88,
+      comp2_p1: 80, comp2_p2: 82, comp2_p3: 84, comp2_p4: 86,
+      comp3_p1: 85, comp3_p2: 88, comp3_p3: 87, comp3_p4: 90,
+      comp4_p1: 88, comp4_p2: 90, comp4_p3: 91, comp4_p4: 92,
+      pc1: 85, pc2: 83, pc3: 88, pc4: 90,
+      p1: 84, p2: 86, p3: 87, p4: 89,
+      promedio: 87,
       estado: "Aprobado",
       observaciones: "Cumple con todas las asignaciones con rigor.",
       updatedAt: "2026-06-17"
@@ -1004,17 +1016,59 @@ app.post("/api/grades/update", (req, res) => {
     );
   }
   
-  const p1 = Number(grade.p1 || 0);
-  const p2 = Number(grade.p2 || 0);
-  const p3 = Number(grade.p3 || 0);
-  const p4 = Number(grade.p4 || 0);
-  const filledPeriods = [p1, p2, p3, p4].filter(p => p > 0);
-  const promedio = filledPeriods.length > 0 ? Math.round(filledPeriods.reduce((a, b) => a + b, 0) / filledPeriods.length) : 0;
+  const comp1_p1 = Number(grade.comp1_p1 !== undefined ? grade.comp1_p1 : (grade.p1 || 0));
+  const comp1_p2 = Number(grade.comp1_p2 !== undefined ? grade.comp1_p2 : (grade.p2 || 0));
+  const comp1_p3 = Number(grade.comp1_p3 !== undefined ? grade.comp1_p3 : (grade.p3 || 0));
+  const comp1_p4 = Number(grade.comp1_p4 !== undefined ? grade.comp1_p4 : (grade.p4 || 0));
+
+  const comp2_p1 = Number(grade.comp2_p1 !== undefined ? grade.comp2_p1 : (grade.p1 || 0));
+  const comp2_p2 = Number(grade.comp2_p2 !== undefined ? grade.comp2_p2 : (grade.p2 || 0));
+  const comp2_p3 = Number(grade.comp2_p3 !== undefined ? grade.comp2_p3 : (grade.p3 || 0));
+  const comp2_p4 = Number(grade.comp2_p4 !== undefined ? grade.comp2_p4 : (grade.p4 || 0));
+
+  const comp3_p1 = Number(grade.comp3_p1 !== undefined ? grade.comp3_p1 : (grade.p1 || 0));
+  const comp3_p2 = Number(grade.comp3_p2 !== undefined ? grade.comp3_p2 : (grade.p2 || 0));
+  const comp3_p3 = Number(grade.comp3_p3 !== undefined ? grade.comp3_p3 : (grade.p3 || 0));
+  const comp3_p4 = Number(grade.comp3_p4 !== undefined ? grade.comp3_p4 : (grade.p4 || 0));
+
+  const comp4_p1 = Number(grade.comp4_p1 !== undefined ? grade.comp4_p1 : (grade.p1 || 0));
+  const comp4_p2 = Number(grade.comp4_p2 !== undefined ? grade.comp4_p2 : (grade.p2 || 0));
+  const comp4_p3 = Number(grade.comp4_p3 !== undefined ? grade.comp4_p3 : (grade.p3 || 0));
+  const comp4_p4 = Number(grade.comp4_p4 !== undefined ? grade.comp4_p4 : (grade.p4 || 0));
+
+  const getCompAvg = (cp1: number, cp2: number, cp3: number, cp4: number) => {
+    const list = [cp1, cp2, cp3, cp4].filter(p => p > 0);
+    return list.length > 0 ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0;
+  };
+
+  const pc1 = getCompAvg(comp1_p1, comp1_p2, comp1_p3, comp1_p4);
+  const pc2 = getCompAvg(comp2_p1, comp2_p2, comp2_p3, comp2_p4);
+  const pc3 = getCompAvg(comp3_p1, comp3_p2, comp3_p3, comp3_p4);
+  const pc4 = getCompAvg(comp4_p1, comp4_p2, comp4_p3, comp4_p4);
+
+  const pcList = [pc1, pc2, pc3, pc4].filter(pc => pc > 0);
+  const promedio = pcList.length > 0 ? Math.round(pcList.reduce((a, b) => a + b, 0) / pcList.length) : 0;
   const estado = promedio >= 70 ? "Aprobado" : "Reprobado";
-  
+
+  const getPeriodAvg = (val1: number, val2: number, val3: number, val4: number) => {
+    const list = [val1, val2, val3, val4].filter(v => v > 0);
+    return list.length > 0 ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0;
+  };
+
+  const p1 = getPeriodAvg(comp1_p1, comp2_p1, comp3_p1, comp4_p1);
+  const p2 = getPeriodAvg(comp1_p2, comp2_p2, comp3_p2, comp4_p2);
+  const p3 = getPeriodAvg(comp1_p3, comp2_p3, comp3_p3, comp4_p3);
+  const p4 = getPeriodAvg(comp1_p4, comp2_p4, comp3_p4, comp4_p4);
+
   const updatedGrade = {
     ...grade,
     id: idx !== -1 ? db.grades[idx].id : (grade.id || "grd-" + Date.now()),
+    comp1_p1, comp1_p2, comp1_p3, comp1_p4,
+    comp2_p1, comp2_p2, comp2_p3, comp2_p4,
+    comp3_p1, comp3_p2, comp3_p3, comp3_p4,
+    comp4_p1, comp4_p2, comp4_p3, comp4_p4,
+    pc1, pc2, pc3, pc4,
+    p1, p2, p3, p4,
     promedio,
     estado,
     updatedAt: new Date().toISOString().split("T")[0]
@@ -1083,13 +1137,49 @@ app.post("/api/grades/update-bulk", (req, res) => {
   const studentName = student ? student.nombreCompleto : "Estudiante";
   
   for (const item of gradesList) {
-    const p1 = Number(item.p1 || 0);
-    const p2 = Number(item.p2 || 0);
-    const p3 = Number(item.p3 || 0);
-    const p4 = Number(item.p4 || 0);
-    const filledPeriods = [p1, p2, p3, p4].filter(p => p > 0);
-    const promedio = filledPeriods.length > 0 ? Math.round(filledPeriods.reduce((a, b) => a + b, 0) / filledPeriods.length) : 0;
+    const comp1_p1 = Number(item.comp1_p1 !== undefined ? item.comp1_p1 : (item.p1 || 0));
+    const comp1_p2 = Number(item.comp1_p2 !== undefined ? item.comp1_p2 : (item.p2 || 0));
+    const comp1_p3 = Number(item.comp1_p3 !== undefined ? item.comp1_p3 : (item.p3 || 0));
+    const comp1_p4 = Number(item.comp1_p4 !== undefined ? item.comp1_p4 : (item.p4 || 0));
+
+    const comp2_p1 = Number(item.comp2_p1 !== undefined ? item.comp2_p1 : (item.p1 || 0));
+    const comp2_p2 = Number(item.comp2_p2 !== undefined ? item.comp2_p2 : (item.p2 || 0));
+    const comp2_p3 = Number(item.comp2_p3 !== undefined ? item.comp2_p3 : (item.p3 || 0));
+    const comp2_p4 = Number(item.comp2_p4 !== undefined ? item.comp2_p4 : (item.p4 || 0));
+
+    const comp3_p1 = Number(item.comp3_p1 !== undefined ? item.comp3_p1 : (item.p1 || 0));
+    const comp3_p2 = Number(item.comp3_p2 !== undefined ? item.comp3_p2 : (item.p2 || 0));
+    const comp3_p3 = Number(item.comp3_p3 !== undefined ? item.comp3_p3 : (item.p3 || 0));
+    const comp3_p4 = Number(item.comp3_p4 !== undefined ? item.comp3_p4 : (item.p4 || 0));
+
+    const comp4_p1 = Number(item.comp4_p1 !== undefined ? item.comp4_p1 : (item.p1 || 0));
+    const comp4_p2 = Number(item.comp4_p2 !== undefined ? item.comp4_p2 : (item.p2 || 0));
+    const comp4_p3 = Number(item.comp4_p3 !== undefined ? item.comp4_p3 : (item.p3 || 0));
+    const comp4_p4 = Number(item.comp4_p4 !== undefined ? item.comp4_p4 : (item.p4 || 0));
+
+    const getCompAvg = (cp1: number, cp2: number, cp3: number, cp4: number) => {
+      const list = [cp1, cp2, cp3, cp4].filter(p => p > 0);
+      return list.length > 0 ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0;
+    };
+
+    const pc1 = getCompAvg(comp1_p1, comp1_p2, comp1_p3, comp1_p4);
+    const pc2 = getCompAvg(comp2_p1, comp2_p2, comp2_p3, comp2_p4);
+    const pc3 = getCompAvg(comp3_p1, comp3_p2, comp3_p3, comp3_p4);
+    const pc4 = getCompAvg(comp4_p1, comp4_p2, comp4_p3, comp4_p4);
+
+    const pcList = [pc1, pc2, pc3, pc4].filter(pc => pc > 0);
+    const promedio = pcList.length > 0 ? Math.round(pcList.reduce((a, b) => a + b, 0) / pcList.length) : 0;
     const estado = promedio >= 70 ? "Aprobado" : "Reprobado";
+
+    const getPeriodAvg = (val1: number, val2: number, val3: number, val4: number) => {
+      const list = [val1, val2, val3, val4].filter(v => v > 0);
+      return list.length > 0 ? Math.round(list.reduce((a, b) => a + b, 0) / list.length) : 0;
+    };
+
+    const p1 = getPeriodAvg(comp1_p1, comp2_p1, comp3_p1, comp4_p1);
+    const p2 = getPeriodAvg(comp1_p2, comp2_p2, comp3_p2, comp4_p2);
+    const p3 = getPeriodAvg(comp1_p3, comp2_p3, comp3_p3, comp4_p3);
+    const p4 = getPeriodAvg(comp1_p4, comp2_p4, comp3_p4, comp4_p4);
     
     const idx = db.grades.findIndex(g => 
       g.estudianteId === studentId && 
@@ -1101,10 +1191,12 @@ app.post("/api/grades/update-bulk", (req, res) => {
       estudianteId: studentId,
       materiaId: item.materiaId,
       materiaNombre: item.materiaNombre,
-      p1,
-      p2,
-      p3,
-      p4,
+      comp1_p1, comp1_p2, comp1_p3, comp1_p4,
+      comp2_p1, comp2_p2, comp2_p3, comp2_p4,
+      comp3_p1, comp3_p2, comp3_p3, comp3_p4,
+      comp4_p1, comp4_p2, comp4_p3, comp4_p4,
+      pc1, pc2, pc3, pc4,
+      p1, p2, p3, p4,
       promedio,
       estado,
       updatedAt: new Date().toISOString().split("T")[0]
@@ -1235,7 +1327,7 @@ app.post("/api/tasks/create", (req, res) => {
 });
 
 app.post("/api/tasks/submit", (req, res) => {
-  const { studentId, studentName, taskId, filename } = req.body;
+  const { studentId, studentName, taskId, filename, contenido } = req.body;
   const db = loadDb();
   
   const taskIdx = db.tasks.findIndex(t => t.id === taskId);
@@ -1248,6 +1340,7 @@ app.post("/api/tasks/submit", (req, res) => {
       estudianteNombre: studentName,
       fechaEntrega: new Date().toISOString().split("T")[0],
       archivo: filename,
+      contenido: contenido || "",
       estado: "Entregado" as const
     };
     
@@ -1270,16 +1363,66 @@ app.post("/api/tasks/grade-submission", (req, res) => {
   if (taskIdx !== -1) {
     const subIdx = db.tasks[taskIdx].entregas.findIndex(e => e.id === submissionId);
     if (subIdx !== -1) {
+      const studentId = db.tasks[taskIdx].entregas[subIdx].estudianteId;
+      const studentName = db.tasks[taskIdx].entregas[subIdx].estudianteNombre;
+      const taskTitle = db.tasks[taskIdx].titulo;
+
       db.tasks[taskIdx].entregas[subIdx].calificacion = Number(calificacion);
       db.tasks[taskIdx].entregas[subIdx].comentario = comentario || "";
       db.tasks[taskIdx].entregas[subIdx].estado = "Calificado" as const;
       
+      // Save notification for student and parent
+      const notifId = "not-" + Date.now();
+      db.notifications = db.notifications || [];
+      db.notifications.push({
+        id: notifId,
+        estudianteId: studentId,
+        titulo: "Nueva Tarea Calificada",
+        mensaje: `La tarea '${taskTitle}' de ${studentName} ha sido calificada con nota: ${calificacion}/100. Comentario: "${comentario || 'Buen trabajo.'}"`,
+        fecha: new Date().toISOString().split("T")[0],
+        leido: false
+      });
+
       saveDb(db);
-      logAction(teacher || "Docente", "Calificación de Tarea", `Se calificó la entrega de ${db.tasks[taskIdx].entregas[subIdx].estudianteNombre} con nota ${calificacion}.`);
+      logAction(teacher || "Docente", "Calificación de Tarea", `Se calificó la entrega de ${studentName} con nota ${calificacion}.`);
       return res.json({ success: true, task: db.tasks[taskIdx] });
     }
   }
   res.status(404).json({ success: false, message: "Entrega no encontrada." });
+});
+
+app.post("/api/tasks/delete", (req, res) => {
+  const { teacher, taskId } = req.body;
+  const db = loadDb();
+  const taskIdx = db.tasks.findIndex(t => t.id === taskId);
+  if (taskIdx !== -1) {
+    const taskTitle = db.tasks[taskIdx].titulo;
+    db.tasks = db.tasks.filter(t => t.id !== taskId);
+    saveDb(db);
+    logAction(teacher || "Docente", "Eliminación de Tarea", `Se eliminó la tarea '${taskTitle}'.`);
+    return res.json({ success: true });
+  }
+  res.status(404).json({ success: false, message: "Tarea no encontrada." });
+});
+
+app.get("/api/notifications/:estudianteId", (req, res) => {
+  const { estudianteId } = req.params;
+  const db = loadDb();
+  const userNotifs = (db.notifications || []).filter((n: any) => n.estudianteId === estudianteId);
+  res.json(userNotifs);
+});
+
+app.post("/api/notifications/mark-read", (req, res) => {
+  const { notificationId } = req.body;
+  const db = loadDb();
+  db.notifications = db.notifications || [];
+  const notifIdx = db.notifications.findIndex((n: any) => n.id === notificationId);
+  if (notifIdx !== -1) {
+    db.notifications[notifIdx].leido = true;
+    saveDb(db);
+    return res.json({ success: true });
+  }
+  res.status(404).json({ success: false, message: "Notificación no encontrada." });
 });
 
 // 8. News Endpoints

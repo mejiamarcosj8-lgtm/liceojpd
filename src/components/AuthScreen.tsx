@@ -19,16 +19,6 @@ export default function AuthScreen({ onBackToWeb, onLoginSuccess, initialRole }:
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // Quick access accounts to let the user immediately experience the system!
-  const shortcuts = [
-    { label: 'Administrador', user: 'admin', pass: 'admin123', desc: 'Control institucional absoluto' },
-    { label: 'Director', user: 'director', pass: 'director123', desc: 'Vista directiva integral' },
-    { label: 'Encargado Registro', user: 'registro', pass: 'registro123', desc: 'Registro y firmas de reportes' },
-    { label: 'Docente (Mate)', user: 'profesor1', pass: 'profesor1123', desc: 'Asistencia, Tareas y Notas' },
-    { label: 'Estudiante', user: 'estudiante1', pass: 'estudiante1123', desc: 'Ver Notas, Tareas y Descarga de Boletín' },
-    { label: 'Padre / Tutor', user: 'padre1', pass: 'padre1123', desc: 'Seguimiento de hijos' },
-  ];
-
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!username || !password) {
@@ -59,15 +49,9 @@ export default function AuthScreen({ onBackToWeb, onLoginSuccess, initialRole }:
         setLoading(false);
       })
       .catch(err => {
-        setError('Error al iniciar sesión. Verifique sus credenciales (Ej. contraseña por defecto: usuario + 123).');
+        setError('Error al iniciar sesión. Verifique sus credenciales.');
         setLoading(false);
       });
-  };
-
-  const useShortcut = (user: string, pass: string) => {
-    setUsername(user);
-    setPassword(pass);
-    setError(null);
   };
 
   return (
@@ -162,28 +146,6 @@ export default function AuthScreen({ onBackToWeb, onLoginSuccess, initialRole }:
               )}
             </button>
           </form>
-
-          {/* Quick Access Exploration Box */}
-          <div className="pt-6 border-t border-neutral-800 space-y-3">
-            <span className="text-[10px] uppercase tracking-wider text-neutral-400 font-bold block text-center">Atajos Rápidos de Exploración</span>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-              {shortcuts.map((sc, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => useShortcut(sc.user, sc.pass)}
-                  className="bg-neutral-900 hover:bg-[#5A2D1A]/30 border border-neutral-800 hover:border-[#D4AF37]/30 p-2.5 rounded-xl text-left transition-all text-[11px]"
-                  title={sc.desc}
-                >
-                  <span className="font-semibold block text-[#D4AF37] leading-none mb-1">{sc.label}</span>
-                  <span className="text-[9px] text-neutral-500 font-mono block leading-none">Contraseña: 123</span>
-                </button>
-              ))}
-            </div>
-            <span className="text-[9px] text-neutral-500 font-light block text-center italic">
-              *Nota: Las contraseñas por defecto corresponden al nombre de usuario + &ldquo;123&rdquo; (ej: admin123, estudiante1123).
-            </span>
-          </div>
 
         </div>
       </div>

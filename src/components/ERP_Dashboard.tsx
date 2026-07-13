@@ -23,6 +23,13 @@ import DisciplineReportView from './DisciplineReportView';
 // @ts-ignore
 import logoDuarte from '../assets/images/logo_duarte_1783545572734.jpg';
 
+export const COMPETENCIAS = [
+  { id: 1, key: 'comp1', label: 'Competencia Comunicativa' },
+  { id: 2, key: 'comp2', label: 'Pensamiento Lógico, Creativo y Crítico / Resolución de Problemas' },
+  { id: 3, key: 'comp3', label: 'Científica y Tecnológica / Ambiental y de la Salud' },
+  { id: 4, key: 'comp4', label: 'Ética y Ciudadana / Desarrollo Personal y Espiritual' }
+];
+
 interface ERPDashboardProps {
   currentUser: UserType;
   onLogout: () => void;
@@ -143,6 +150,8 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
 
   // Enter grades state (Docente)
   const [editingGrades, setEditingGrades] = useState<{[key: string]: Partial<Grade>}>({});
+  const [selectedCompetencyIndex, setSelectedCompetencyIndex] = useState<number>(1); // 1 = Comunicativa, 2 = Pensamiento, 3 = Cientifica, 4 = Etica
+  const [expandedGradeStudentId, setExpandedGradeStudentId] = useState<string | null>(null);
 
   // New task state (Docente)
   const [taskForm, setTaskForm] = useState({
@@ -152,6 +161,19 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
   // Simulated file upload state (Estudiante)
   const [uploadingTaskId, setUploadingTaskId] = useState<string | null>(null);
   const [uploadedFile, setUploadedFile] = useState<string>('');
+  const [uploadedFileContent, setUploadedFileContent] = useState<string>('');
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [dragOverTaskId, setDragOverTaskId] = useState<string | null>(null);
+
+  // New task management states (Docente)
+  const [selectedTaskIdForDeliveries, setSelectedTaskIdForDeliveries] = useState<string | null>(null);
+  const [isGrading, setIsGrading] = useState<boolean>(false);
+  const [gradingSubmission, setGradingSubmission] = useState<{ studentName: string; submissionId: string; taskId: string } | null>(null);
+  const [gradeValue, setGradeValue] = useState<string>('');
+  const [gradeComment, setGradeComment] = useState<string>('');
+  const [taskNotifications, setTaskNotifications] = useState<any[]>([]);
+  const [viewingFile, setViewingFile] = useState<{ studentName: string; taskTitle: string; filename: string; date: string; contenido?: string } | null>(null);
 
   // Config Form state (Administrador)
   const [configForm, setConfigForm] = useState<Partial<SystemConfig>>({});
@@ -265,6 +287,13 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
     
     // Fetch DB collections
     syncData();
+
+    // Sincronización automática de fondo cada 5 segundos para actualización en tiempo real
+    const intervalId = setInterval(() => {
+      syncData();
+    }, 5000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const syncData = () => {
@@ -818,10 +847,29 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
       estudianteId: studId,
       materiaId: matId,
       materiaNombre: matName,
-      p1: Number(editState.p1 !== undefined ? editState.p1 : (existingGrade ? existingGrade.p1 : 0)),
-      p2: Number(editState.p2 !== undefined ? editState.p2 : (existingGrade ? existingGrade.p2 : 0)),
-      p3: Number(editState.p3 !== undefined ? editState.p3 : (existingGrade ? existingGrade.p3 : 0)),
-      p4: Number(editState.p4 !== undefined ? editState.p4 : (existingGrade ? existingGrade.p4 : 0))
+      // Competency 1
+      comp1_p1: Number(editState.comp1_p1 !== undefined ? editState.comp1_p1 : (existingGrade?.comp1_p1 !== undefined ? existingGrade.comp1_p1 : (existingGrade?.p1 || 0))),
+      comp1_p2: Number(editState.comp1_p2 !== undefined ? editState.comp1_p2 : (existingGrade?.comp1_p2 !== undefined ? existingGrade.comp1_p2 : (existingGrade?.p2 || 0))),
+      comp1_p3: Number(editState.comp1_p3 !== undefined ? editState.comp1_p3 : (existingGrade?.comp1_p3 !== undefined ? existingGrade.comp1_p3 : (existingGrade?.p3 || 0))),
+      comp1_p4: Number(editState.comp1_p4 !== undefined ? editState.comp1_p4 : (existingGrade?.comp1_p4 !== undefined ? existingGrade.comp1_p4 : (existingGrade?.p4 || 0))),
+      
+      // Competency 2
+      comp2_p1: Number(editState.comp2_p1 !== undefined ? editState.comp2_p1 : (existingGrade?.comp2_p1 !== undefined ? existingGrade.comp2_p1 : (existingGrade?.p1 || 0))),
+      comp2_p2: Number(editState.comp2_p2 !== undefined ? editState.comp2_p2 : (existingGrade?.comp2_p2 !== undefined ? existingGrade.comp2_p2 : (existingGrade?.p2 || 0))),
+      comp2_p3: Number(editState.comp2_p3 !== undefined ? editState.comp2_p3 : (existingGrade?.comp2_p3 !== undefined ? existingGrade.comp2_p3 : (existingGrade?.p3 || 0))),
+      comp2_p4: Number(editState.comp2_p4 !== undefined ? editState.comp2_p4 : (existingGrade?.comp2_p4 !== undefined ? existingGrade.comp2_p4 : (existingGrade?.p4 || 0))),
+
+      // Competency 3
+      comp3_p1: Number(editState.comp3_p1 !== undefined ? editState.comp3_p1 : (existingGrade?.comp3_p1 !== undefined ? existingGrade.comp3_p1 : (existingGrade?.p1 || 0))),
+      comp3_p2: Number(editState.comp3_p2 !== undefined ? editState.comp3_p2 : (existingGrade?.comp3_p2 !== undefined ? existingGrade.comp3_p2 : (existingGrade?.p2 || 0))),
+      comp3_p3: Number(editState.comp3_p3 !== undefined ? editState.comp3_p3 : (existingGrade?.comp3_p3 !== undefined ? existingGrade.comp3_p3 : (existingGrade?.p3 || 0))),
+      comp3_p4: Number(editState.comp3_p4 !== undefined ? editState.comp3_p4 : (existingGrade?.comp3_p4 !== undefined ? existingGrade.comp3_p4 : (existingGrade?.p4 || 0))),
+
+      // Competency 4
+      comp4_p1: Number(editState.comp4_p1 !== undefined ? editState.comp4_p1 : (existingGrade?.comp4_p1 !== undefined ? existingGrade.comp4_p1 : (existingGrade?.p1 || 0))),
+      comp4_p2: Number(editState.comp4_p2 !== undefined ? editState.comp4_p2 : (existingGrade?.comp4_p2 !== undefined ? existingGrade.comp4_p2 : (existingGrade?.p2 || 0))),
+      comp4_p3: Number(editState.comp4_p3 !== undefined ? editState.comp4_p3 : (existingGrade?.comp4_p3 !== undefined ? existingGrade.comp4_p3 : (existingGrade?.p3 || 0))),
+      comp4_p4: Number(editState.comp4_p4 !== undefined ? editState.comp4_p4 : (existingGrade?.comp4_p4 !== undefined ? existingGrade.comp4_p4 : (existingGrade?.p4 || 0))),
     };
 
     fetch('/api/grades/update', {
@@ -893,10 +941,13 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        studentId: currentUser.id,
-        studentName: currentUser.nombreCompleto,
+        studentId: currentUser.role === 'padre' ? selectedChildId : currentUser.id,
+        studentName: currentUser.role === 'padre' 
+          ? (users.find(u => u.id === selectedChildId)?.nombreCompleto || 'Estudiante') 
+          : currentUser.nombreCompleto,
         taskId,
-        filename: uploadedFile
+        filename: uploadedFile,
+        contenido: uploadedFileContent
       })
     })
       .then(res => res.json())
@@ -906,9 +957,167 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
           syncData();
           setUploadingTaskId(null);
           setUploadedFile('');
+          setUploadedFileContent('');
         }
       });
   };
+
+  const startSimulatedUpload = (file: File) => {
+    setUploadedFile(file.name);
+    setIsUploading(true);
+    setUploadProgress(0);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setUploadedFileContent(reader.result as string);
+    };
+
+    const isText = file.type.startsWith('text/') || 
+                   file.name.endsWith('.txt') || 
+                   file.name.endsWith('.html') || 
+                   file.name.endsWith('.css') || 
+                   file.name.endsWith('.js') || 
+                   file.name.endsWith('.json');
+
+    if (isText) {
+      reader.readAsText(file);
+    } else {
+      reader.readAsDataURL(file);
+    }
+    
+    let currentProgress = 0;
+    const interval = setInterval(() => {
+      currentProgress += 10;
+      setUploadProgress(currentProgress);
+      if (currentProgress >= 100) {
+        clearInterval(interval);
+        setIsUploading(false);
+      }
+    }, 120);
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    triggerConfirm(
+      'Eliminar Tarea Académica',
+      '¿Está completamente seguro de eliminar esta asignación permanentemente? Se perderán todas las entregas de los alumnos y esta acción es irreversible.',
+      () => {
+        fetch('/api/tasks/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            teacher: currentUser.nombreCompleto,
+            taskId
+          })
+        })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              showNotification('Tarea eliminada correctamente.', 'success');
+              syncData();
+              if (selectedTaskIdForDeliveries === taskId) {
+                setSelectedTaskIdForDeliveries(null);
+              }
+            } else {
+              showNotification('Error al eliminar la tarea.', 'error');
+            }
+          })
+          .catch(err => {
+            console.error("Error deleting task:", err);
+            showNotification('Error de conexión con el servidor.', 'error');
+          });
+      }
+    );
+  };
+
+  const handleSaveTaskGrade = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!gradingSubmission) return;
+
+    fetch('/api/tasks/grade-submission', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        teacher: currentUser.nombreCompleto,
+        taskId: gradingSubmission.taskId,
+        submissionId: gradingSubmission.submissionId,
+        calificacion: Number(gradeValue),
+        comentario: gradeComment
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          showNotification('Calificación de tarea guardada y enviada al estudiante y padre.', 'success');
+          syncData();
+          setIsGrading(false);
+          setGradingSubmission(null);
+          setGradeValue('');
+          setGradeComment('');
+        } else {
+          showNotification('Error al guardar la calificación.', 'error');
+        }
+      })
+      .catch(err => {
+        console.error("Error grading submission:", err);
+        showNotification('Error de conexión.', 'error');
+      });
+  };
+
+  const handleDownloadFile = (filename: string, contenido?: string) => {
+    if (!contenido) {
+      const fallbackText = `Asignación: ${filename}\nEstado: Entregado. No se dispone de previsualización para archivos anteriores a esta actualización.`;
+      const blob = new Blob([fallbackText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename.endsWith('.txt') ? filename : filename + '.txt');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showNotification('Archivo de fallback descargado.', 'success');
+      return;
+    }
+
+    let blob: Blob;
+    if (contenido.startsWith('data:')) {
+      try {
+        const arr = contenido.split(',');
+        const mime = arr[0].match(/:(.*?);/)?.[1] || 'application/octet-stream';
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        blob = new Blob([u8arr], { type: mime });
+      } catch (e) {
+        blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+      }
+    } else {
+      blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+    }
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showNotification('Archivo descargado correctamente al sistema local.', 'success');
+  };
+
+  useEffect(() => {
+    if (currentUser) {
+      const targetStudentId = currentUser.role === 'padre' ? selectedChildId : currentUser.id;
+      if (targetStudentId) {
+        fetch(`/api/notifications/${targetStudentId}`)
+          .then(res => res.json())
+          .then(data => setTaskNotifications(Array.isArray(data) ? data : []))
+          .catch(err => console.error("Error fetching notifications:", err));
+      }
+    }
+  }, [currentUser, selectedChildId, tasks]);
 
   // AI Orientation advice query
   const handleAskAI = () => {
@@ -1592,6 +1801,52 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
             {/* Student & Parent overview stats */}
             {(currentUser.role === 'estudiante' || currentUser.role === 'padre') && activeStudent && (
               <div className="space-y-8">
+                {/* Panel de Notificaciones de Calificaciones */}
+                {taskNotifications && taskNotifications.filter(n => !n.leido).length > 0 && (
+                  <div className="bg-[#5A2D1A]/10 border border-[#D4AF37]/30 rounded-3xl p-6 space-y-4 animate-fade-in relative overflow-hidden">
+                    <div className="absolute top-0 right-0 h-32 w-32 bg-[radial-gradient(circle_at_top_right,rgba(212,175,55,0.08),transparent)] pointer-events-none" />
+                    <div className="flex items-center space-x-2 border-b border-neutral-850 pb-3">
+                      <span className="relative flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#D4AF37] opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#D4AF37]"></span>
+                      </span>
+                      <h4 className="text-xs font-display font-bold text-[#D4AF37] uppercase tracking-wider">Centro de Notificaciones Académicas</h4>
+                    </div>
+
+                    <div className="space-y-3">
+                      {taskNotifications.filter(n => !n.leido).map(notif => (
+                        <div key={notif.id} className="bg-neutral-950/70 border border-neutral-800 p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all">
+                          <div className="space-y-1">
+                            <span className="text-[10px] text-neutral-400 font-mono block">{notif.fecha}</span>
+                            <span className="text-xs font-bold text-neutral-200 block">{notif.titulo}</span>
+                            <p className="text-xs text-neutral-400 font-light leading-relaxed">{notif.mensaje}</p>
+                          </div>
+                          
+                          <button
+                            onClick={() => {
+                              fetch('/api/notifications/mark-read', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ notificationId: notif.id })
+                              })
+                                .then(res => res.json())
+                                .then(data => {
+                                  if (data.success) {
+                                    setTaskNotifications(prev => prev.map(n => n.id === notif.id ? { ...n, leido: true } : n));
+                                    showNotification('Notificación archivada.', 'info');
+                                  }
+                                });
+                            }}
+                            className="bg-neutral-900 hover:bg-[#5A2D1A]/30 hover:text-white text-neutral-400 text-[10px] font-bold uppercase tracking-wider py-2 px-3.5 rounded-xl border border-neutral-800 hover:border-[#D4AF37]/30 transition-all self-start sm:self-auto shrink-0 cursor-pointer"
+                          >
+                            Entendido
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                   <div className="bg-neutral-950 border border-neutral-800 p-6 rounded-2xl">
                     <Award className="h-5 w-5 text-[#D4AF37] mb-2" />
@@ -2474,72 +2729,235 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
                         <div className="bg-neutral-950 border border-neutral-800 rounded-3xl p-6 md:p-8 space-y-6">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-neutral-800">
                             <div>
-                              <h3 className="text-sm font-display font-bold text-[#D4AF37] uppercase tracking-wider">Libreta de Notas Trimestrales</h3>
-                              <p className="text-[11px] text-neutral-500 mt-0.5">Asigne y modifique calificaciones de {selectedSubject?.nombre || 'la materia seleccionada'}.</p>
+                              <h3 className="text-sm font-display font-bold text-[#D4AF37] uppercase tracking-wider">Libreta de Notas Trimestrales (Minerd)</h3>
+                              <p className="text-[11px] text-neutral-500 mt-0.5">Asigne y modifique calificaciones de {selectedSubject?.nombre || 'la materia seleccionada'} basadas en competencias oficiales.</p>
                             </div>
                           </div>
 
                           {activeSubjectId ? (
-                            <div className="space-y-4">
+                            <div className="space-y-6">
+                              {/* Selector de Competencia Activa */}
+                              <div className="bg-neutral-900/60 border border-neutral-800 p-5 rounded-2xl space-y-3">
+                                <div>
+                                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#D4AF37] block">Paso 1: Seleccione la Competencia Activa</span>
+                                  <p className="text-[11px] text-neutral-400">Las notas rápidas ingresadas en la fila de cada alumno se registrarán para la competencia que tenga seleccionada aquí.</p>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                                  {COMPETENCIAS.map((comp) => (
+                                    <button
+                                      key={comp.id}
+                                      onClick={() => setSelectedCompetencyIndex(comp.id)}
+                                      className={`p-2.5 text-left text-[11px] font-bold rounded-xl border transition-all cursor-pointer flex items-start space-x-2 ${
+                                        selectedCompetencyIndex === comp.id
+                                          ? 'bg-[#D4AF37]/10 text-white border-[#D4AF37]'
+                                          : 'bg-neutral-950 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700'
+                                      }`}
+                                    >
+                                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 ${
+                                        selectedCompetencyIndex === comp.id ? 'bg-[#D4AF37] text-neutral-950' : 'bg-neutral-900 text-neutral-500'
+                                      }`}>
+                                        {comp.id}
+                                      </span>
+                                      <span className="line-clamp-2 leading-tight">{comp.label}</span>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Alumnos List */}
                               <div className="space-y-4">
                                 {assignedStudents.map((stud) => {
                                   const grade = grades.find(g => g.estudianteId === stud.id && g.materiaId === activeSubjectId);
                                   const currentEdit = editingGrades[grade?.id || stud.id] || {};
                                   
+                                  const compKeyPref = `comp${selectedCompetencyIndex}_`;
+                                  const isExpanded = expandedGradeStudentId === stud.id;
+
+                                  // Calculate temporary averages for display
+                                  const getVal = (field: string, dflt: number) => {
+                                    return currentEdit[field as keyof Grade] !== undefined 
+                                      ? Number(currentEdit[field as keyof Grade]) 
+                                      : (grade ? Number(grade[field as keyof Grade] || 0) : dflt);
+                                  };
+
+                                  const tempPc = (cIdx: number) => {
+                                    const pref = `comp${cIdx}_`;
+                                    const vals = [getVal(`${pref}p1`, 0), getVal(`${pref}p2`, 0), getVal(`${pref}p3`, 0), getVal(`${pref}p4`, 0)].filter(v => v > 0);
+                                    return vals.length > 0 ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : (grade ? Number(grade[`pc${cIdx}` as keyof Grade] || 0) : 0);
+                                  };
+
+                                  const tempPc1 = tempPc(1);
+                                  const tempPc2 = tempPc(2);
+                                  const tempPc3 = tempPc(3);
+                                  const tempPc4 = tempPc(4);
+
+                                  const tempPcList = [tempPc1, tempPc2, tempPc3, tempPc4].filter(p => p > 0);
+                                  const tempPromedio = tempPcList.length > 0 ? Math.round(tempPcList.reduce((a, b) => a + b, 0) / tempPcList.length) : (grade ? grade.promedio : 0);
+
                                   return (
-                                    <div key={stud.id} className="bg-neutral-900/40 border border-neutral-800 p-4 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                      <div className="flex items-center space-x-3 min-w-[200px]">
-                                        <img src={stud.fotografia} className="w-9 h-9 rounded-full object-cover shrink-0" referrerPolicy="no-referrer" />
-                                        <div>
-                                          <span className="text-xs font-bold text-neutral-200 block">{stud.nombreCompleto}</span>
-                                          <span className="text-[9px] text-neutral-500 font-mono block">{stud.matricula}</span>
+                                    <div key={stud.id} className="bg-neutral-900/40 border border-neutral-800 p-4 rounded-xl space-y-4">
+                                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                        <div className="flex items-center space-x-3 min-w-[200px]">
+                                          <img src={stud.fotografia} className="w-9 h-9 rounded-full object-cover shrink-0" referrerPolicy="no-referrer" />
+                                          <div>
+                                            <span className="text-xs font-bold text-neutral-200 block">{stud.nombreCompleto}</span>
+                                            <span className="text-[9px] text-neutral-500 font-mono block">{stud.matricula}</span>
+                                          </div>
+                                        </div>
+
+                                        {/* Inputs of Grades for ACTIVE Competency */}
+                                        <div className="grid grid-cols-4 sm:grid-cols-6 gap-2 max-w-lg w-full">
+                                          {['p1', 'p2', 'p3', 'p4'].map(p => {
+                                            const fieldKey = `${compKeyPref}${p}`;
+                                            const displayValue = currentEdit[fieldKey as keyof Grade] !== undefined 
+                                              ? currentEdit[fieldKey as keyof Grade] 
+                                              : (grade ? (grade[fieldKey as keyof Grade] || '') : '');
+
+                                            return (
+                                              <div key={p}>
+                                                <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-bold block mb-1 text-center">{p}</span>
+                                                <input 
+                                                  type="number"
+                                                  min="0"
+                                                  max="100"
+                                                  value={displayValue}
+                                                  onChange={(e) => {
+                                                    const val = e.target.value === '' ? '' : Number(e.target.value);
+                                                    setEditingGrades(prev => ({
+                                                      ...prev,
+                                                      [grade?.id || stud.id]: {
+                                                        ...prev[grade?.id || stud.id],
+                                                        [fieldKey]: val
+                                                      }
+                                                    }));
+                                                  }}
+                                                  className="w-full text-center bg-neutral-950 border border-neutral-800 rounded-lg py-1.5 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
+                                                />
+                                              </div>
+                                            );
+                                          })}
+                                          
+                                          <div className="hidden sm:block text-center bg-neutral-950/40 p-1 rounded-lg border border-neutral-800/40">
+                                            <span className="text-[8px] uppercase tracking-wider text-[#D4AF37] font-bold block mb-0.5">Prom C{selectedCompetencyIndex}</span>
+                                            <div className="text-[11px] font-bold text-white">
+                                              {tempPc(selectedCompetencyIndex) || '-'}
+                                            </div>
+                                          </div>
+
+                                          <div className="hidden sm:block text-center bg-[#D4AF37]/5 p-1 rounded-lg border border-[#D4AF37]/10">
+                                            <span className="text-[8px] uppercase tracking-wider text-[#D4AF37] font-bold block mb-0.5">Calif. Final</span>
+                                            <div className="text-[11px] font-black text-[#D4AF37]">
+                                              {tempPromedio || '-'}
+                                            </div>
+                                          </div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between md:justify-end gap-2 border-t md:border-t-0 border-neutral-800 pt-3 md:pt-0 shrink-0">
+                                          <button
+                                            type="button"
+                                            onClick={() => setExpandedGradeStudentId(isExpanded ? null : stud.id)}
+                                            className="text-[10px] font-bold text-neutral-400 hover:text-white bg-neutral-850 px-2.5 py-2 rounded-lg border border-neutral-800 hover:border-neutral-700 transition-colors flex items-center space-x-1 cursor-pointer"
+                                            title="Ver Matriz Completa de Competencias"
+                                          >
+                                            <Eye className="h-3 w-3" />
+                                            <span>{isExpanded ? 'Ocultar Matriz' : 'Ver Matriz'}</span>
+                                          </button>
+                                          
+                                          <span className={`text-[10px] font-bold uppercase px-2 py-1.5 rounded-md ${
+                                            tempPromedio >= 70 ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-900/50' : 'bg-red-950/40 text-red-400 border border-red-900/50'
+                                          }`}>
+                                            {tempPromedio >= 70 ? 'Aprobado' : tempPromedio > 0 ? 'Reprobado' : 'Pendiente'}
+                                          </span>
+                                          <button
+                                            onClick={() => handleSaveGrade(grade?.id || '', stud.id, activeSubjectId, selectedSubject?.nombre || '')}
+                                            className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-xs uppercase tracking-wider px-3.5 py-2 rounded-lg transition-colors shadow-xs cursor-pointer"
+                                          >
+                                            Guardar
+                                          </button>
                                         </div>
                                       </div>
 
-                                      {/* Inputs of Grades */}
-                                      <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 max-w-md w-full">
-                                        {['p1', 'p2', 'p3', 'p4'].map(p => (
-                                          <div key={p}>
-                                            <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-bold block mb-1 text-center">{p}</span>
-                                            <input 
-                                              type="number"
-                                              min="0"
-                                              max="100"
-                                              value={currentEdit[p as keyof Grade] !== undefined ? currentEdit[p as keyof Grade] : (grade ? grade[p as keyof Grade] : '')}
-                                              onChange={(e) => {
-                                                setEditingGrades(prev => ({
-                                                  ...prev,
-                                                  [grade?.id || stud.id]: {
-                                                    ...prev[grade?.id || stud.id],
-                                                    [p]: Number(e.target.value)
-                                                  }
-                                                }));
-                                              }}
-                                              className="w-full text-center bg-neutral-950 border border-neutral-800 rounded-lg py-1.5 text-xs text-white focus:outline-none focus:border-[#D4AF37]"
-                                            />
+                                      {/* Collapsible 4x4 matrix for editing all competencies */}
+                                      {isExpanded && (
+                                        <div className="mt-4 pt-4 border-t border-neutral-800 bg-neutral-950/80 p-4 rounded-xl space-y-4 animate-in fade-in slide-in-from-top-2 duration-250">
+                                          <div className="flex items-center justify-between pb-2 border-b border-neutral-800">
+                                            <h4 className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-wider flex items-center space-x-2">
+                                              <span>Matriz Oficial de Calificaciones del Estudiante</span>
+                                            </h4>
+                                            <span className="text-[10px] text-neutral-500 font-medium">Configure todas las competencias simultáneamente</span>
                                           </div>
-                                        ))}
-                                        <div className="hidden sm:block">
-                                          <span className="text-[9px] uppercase tracking-wider text-neutral-500 font-bold block mb-1 text-center">Prom</span>
-                                          <div className="w-full text-center py-1.5 text-xs font-bold text-[#D4AF37]">
-                                            {grade ? grade.promedio : '-'}
+
+                                          <div className="overflow-x-auto">
+                                            <table className="w-full text-left text-xs text-neutral-300">
+                                              <thead>
+                                                <tr className="border-b border-neutral-800 text-[10px] text-neutral-500 uppercase font-bold">
+                                                  <th className="py-2 pr-4 font-semibold">Competencia Fundamental (Minerd)</th>
+                                                  {['P1', 'P2', 'P3', 'P4'].map(p => (
+                                                    <th key={p} className="py-2 text-center w-16">{p}</th>
+                                                  ))}
+                                                  <th className="py-2 text-center w-20 text-[#D4AF37]">PC (Prom)</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody className="divide-y divide-neutral-850">
+                                                {COMPETENCIAS.map((comp) => {
+                                                  const cPref = `comp${comp.id}_`;
+                                                  return (
+                                                    <tr key={comp.id} className="hover:bg-neutral-900/30">
+                                                      <td className="py-2.5 pr-4 font-semibold text-neutral-300 text-[11px]">
+                                                        {comp.id}. {comp.label}
+                                                      </td>
+                                                      {['p1', 'p2', 'p3', 'p4'].map(p => {
+                                                        const fKey = `${cPref}${p}`;
+                                                        const val = currentEdit[fKey as keyof Grade] !== undefined 
+                                                          ? currentEdit[fKey as keyof Grade] 
+                                                          : (grade ? (grade[fKey as keyof Grade] || '') : '');
+
+                                                        return (
+                                                          <td key={p} className="py-2 px-1 text-center">
+                                                            <input 
+                                                              type="number"
+                                                              min="0"
+                                                              max="100"
+                                                              value={val}
+                                                              onChange={(e) => {
+                                                                const numVal = e.target.value === '' ? '' : Number(e.target.value);
+                                                                setEditingGrades(prev => ({
+                                                                  ...prev,
+                                                                  [grade?.id || stud.id]: {
+                                                                    ...prev[grade?.id || stud.id],
+                                                                    [fKey]: numVal
+                                                                  }
+                                                                }));
+                                                              }}
+                                                              className="w-12 text-center bg-neutral-900 border border-neutral-800 rounded-md py-1 text-[11px] text-white focus:outline-none focus:border-[#D4AF37]"
+                                                            />
+                                                          </td>
+                                                        );
+                                                      })}
+                                                      <td className="py-2 text-center font-bold text-white text-[11px] bg-neutral-900/40">
+                                                        {tempPc(comp.id) || '-'}
+                                                      </td>
+                                                    </tr>
+                                                  );
+                                                })}
+                                              </tbody>
+                                            </table>
+                                          </div>
+
+                                          <div className="flex items-center justify-between pt-3 border-t border-neutral-800">
+                                            <div className="text-[11px] text-neutral-400">
+                                              Calificación Final Proyectada del Área: <span className="font-extrabold text-[#D4AF37]">{tempPromedio || '-'}</span> ({tempPromedio >= 70 ? 'Aprobado' : 'Reprobado'})
+                                            </div>
+                                            <button
+                                              type="button"
+                                              onClick={() => handleSaveGrade(grade?.id || '', stud.id, activeSubjectId, selectedSubject?.nombre || '')}
+                                              className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-[10px] uppercase tracking-wider py-2 px-4 rounded-lg cursor-pointer"
+                                            >
+                                              Guardar Cambios de Matriz
+                                            </button>
                                           </div>
                                         </div>
-                                      </div>
-
-                                      <div className="flex items-center justify-between md:justify-end gap-3 border-t md:border-t-0 border-neutral-800 pt-3 md:pt-0 shrink-0">
-                                        <span className={`text-[10px] font-bold uppercase px-2 py-1 rounded-md ${
-                                          grade?.estado === 'Aprobado' ? 'bg-emerald-950/40 text-emerald-400 border border-emerald-900/50' : 'bg-red-950/40 text-red-400 border border-red-900/50'
-                                        }`}>
-                                          {grade ? grade.estado : 'Pendiente'}
-                                        </span>
-                                        <button
-                                          onClick={() => handleSaveGrade(grade?.id || '', stud.id, activeSubjectId, selectedSubject?.nombre || '')}
-                                          className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-xs uppercase tracking-wider px-3.5 py-2 rounded-lg transition-colors shadow-xs"
-                                        >
-                                          Guardar
-                                        </button>
-                                      </div>
+                                      )}
                                     </div>
                                   );
                                 })}
@@ -2547,7 +2965,7 @@ export default function ERPDashboard({ currentUser, onLogout, onReturnToWeb }: E
                             </div>
                           ) : (
                             <div className="text-center py-12 text-neutral-500 text-xs border border-dashed border-neutral-800 rounded-xl">
-                              Debe seleccionar una asignatura para habilitar el registro de calificaciones.
+                              Debe seleccionar una asignatura para habilitar el registro de calificaciones por competencia.
                             </div>
                           )}
                         </div>
@@ -3263,63 +3681,344 @@ service cloud.firestore {
                 </form>
               </div>
 
-              {/* Submissions view list */}
-              <div className="lg:col-span-7 bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-4">
-                <h3 className="text-xs uppercase tracking-wider font-bold text-neutral-400 border-b border-neutral-800 pb-2">Entregas Recibidas</h3>
+              {/* Tareas creadas y control de entregas */}
+              <div className="lg:col-span-7 bg-neutral-950 border border-neutral-800 p-6 rounded-2xl space-y-6">
+                <div className="border-b border-neutral-800 pb-3">
+                  <h3 className="text-xs uppercase tracking-wider font-bold text-neutral-400">Tareas Creadas y Control de Entregas</h3>
+                  <p className="text-[10px] text-neutral-500 font-light mt-0.5">Vea quiénes han entregado, califique en tiempo real y elimine asignaciones si es necesario.</p>
+                </div>
                 
-                <div className="space-y-4 max-h-[400px] overflow-y-auto">
-                  {tasks.filter(t => t.entregas && t.entregas.length > 0).length === 0 ? (
-                    <div className="text-center py-12 text-neutral-500 text-xs">Aún no se han registrado entregas de archivos por los estudiantes.</div>
+                <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
+                  {tasks.length === 0 ? (
+                    <div className="text-center py-12 text-neutral-500 text-xs">No hay tareas creadas aún en la plataforma.</div>
                   ) : (
-                    tasks.filter(t => t.entregas && t.entregas.length > 0).map(task => (
-                      <div key={task.id} className="space-y-3">
-                        <span className="text-[10px] font-bold text-[#D4AF37] block">{task.materiaNombre} — {task.titulo}</span>
-                        {task.entregas.map(sub => (
-                          <div key={sub.id} className="bg-neutral-900 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-neutral-800">
-                            <div>
-                              <span className="text-xs font-bold text-neutral-200 block">{sub.estudianteNombre}</span>
-                              <span className="text-[10px] text-neutral-400 block font-mono">{sub.archivo} (Fecha: {sub.fechaEntrega})</span>
+                    tasks.map(task => {
+                      const taskCourse = courses.find(c => c.id === task.cursoId);
+                      const courseStudents = users.filter(u => u.role === 'estudiante' && u.cursoId === task.cursoId);
+                      const entregasCount = task.entregas ? task.entregas.length : 0;
+                      const isExpanded = selectedTaskIdForDeliveries === task.id;
+
+                      return (
+                        <div key={task.id} className="bg-neutral-900 border border-neutral-800 rounded-2xl p-4 space-y-4 hover:border-neutral-750 transition-all">
+                          <div className="flex justify-between items-start gap-4">
+                            <div className="space-y-1 flex-1">
+                              <div className="flex items-center space-x-2">
+                                <span className="bg-[#5A2D1A]/50 text-[#D4AF37] text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-[#D4AF37]/20">
+                                  {task.materiaNombre}
+                                </span>
+                                <span className="text-[10px] text-neutral-400 font-mono">Curso: {taskCourse ? taskCourse.nombre : 'General'}</span>
+                              </div>
+                              <h4 className="font-display font-bold text-neutral-200 text-sm">{task.titulo}</h4>
+                              <p className="text-[11px] text-neutral-450 font-light line-clamp-2 leading-relaxed">{task.descripcion}</p>
+                              <span className="text-[10px] text-[#D4AF37] font-mono block">Fecha Límite: {task.fechaEntrega}</span>
                             </div>
-                            <div className="flex items-center space-x-3 shrink-0">
-                              <span className="text-xs text-neutral-400 font-bold">Nota: {sub.calificacion !== undefined ? sub.calificacion : 'S/N'}</span>
-                              <button 
-                                onClick={() => {
-                                  const nota = window.prompt(`Ingrese la calificación para ${sub.estudianteNombre} (0-100):`, '90');
-                                  if (nota !== null) {
-                                    const comment = window.prompt('Escriba un comentario o retroalimentación:', 'Buen trabajo.');
-                                    fetch('/api/tasks/grade-submission', {
-                                      method: 'POST',
-                                      headers: { 'Content-Type': 'application/json' },
-                                      body: JSON.stringify({
-                                        teacher: currentUser.nombreCompleto,
-                                        taskId: task.id,
-                                        submissionId: sub.id,
-                                        calificacion: Number(nota),
-                                        comentario: comment || ""
-                                      })
-                                    })
-                                      .then(res => res.json())
-                                      .then(data => {
-                                        if (data.success) {
-                                          alert('Nota de tarea guardada correctamente.');
-                                          syncData();
-                                        }
-                                      });
-                                  }
-                                }}
-                                className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-semibold text-[10px] uppercase tracking-wider px-3 py-1.5 rounded-md"
+
+                            <div className="flex items-center space-x-2 shrink-0">
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteTask(task.id)}
+                                className="bg-red-950/40 hover:bg-red-900/30 border border-red-900/50 hover:border-red-600 text-red-400 p-2 rounded-xl transition-all cursor-pointer"
+                                title="Eliminar Tarea"
                               >
-                                Calificar
+                                <Trash className="h-4 w-4" />
+                              </button>
+                              
+                              <button
+                                type="button"
+                                onClick={() => setSelectedTaskIdForDeliveries(isExpanded ? null : task.id)}
+                                className="bg-neutral-800 hover:bg-neutral-700 text-neutral-200 px-3 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1 transition-all border border-neutral-700 cursor-pointer"
+                              >
+                                <Eye className="h-3.5 w-3.5 text-[#D4AF37]" />
+                                <span>{isExpanded ? 'Ocultar' : `Ver Alumnos (${entregasCount}/${courseStudents.length})`}</span>
                               </button>
                             </div>
                           </div>
-                        ))}
-                      </div>
-                    ))
+
+                          {/* Expanded delivery list of all students */}
+                          {isExpanded && (
+                            <div className="border-t border-neutral-800 pt-4 space-y-3 animate-fade-in text-left">
+                              <div className="flex justify-between items-center text-[10px] uppercase tracking-wider text-neutral-500 font-bold px-1">
+                                <span>Estudiante</span>
+                                <span>Estado de Entrega / Calificación</span>
+                              </div>
+
+                              <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                                {courseStudents.length === 0 ? (
+                                  <div className="text-center py-4 text-neutral-500 text-xs">No hay alumnos inscritos en este curso.</div>
+                                ) : (
+                                  courseStudents.map(student => {
+                                    const submission = task.entregas ? task.entregas.find(e => e.estudianteId === student.id) : null;
+                                    
+                                    return (
+                                      <div key={student.id} className="bg-neutral-950 p-3 rounded-xl flex items-center justify-between border border-neutral-850 hover:border-neutral-800 transition-all gap-4">
+                                        <div className="min-w-0 flex-1">
+                                          <span className="text-xs font-bold text-neutral-200 block truncate">{student.nombreCompleto}</span>
+                                          {submission && (
+                                            <div className="flex flex-wrap items-center gap-2 mt-1">
+                                              <span className="text-[10px] text-neutral-400 font-mono flex items-center space-x-1 bg-neutral-900 px-2 py-0.5 rounded-md border border-neutral-800">
+                                                <span>📄 {submission.archivo}</span>
+                                                <span className="text-neutral-500">({submission.fechaEntrega})</span>
+                                              </span>
+                                              <button
+                                                type="button"
+                                                onClick={() => setViewingFile({ studentName: student.nombreCompleto, taskTitle: task.titulo, filename: submission.archivo, date: submission.fechaEntrega, contenido: submission.contenido })}
+                                                className="text-[9px] font-bold text-[#D4AF37] hover:text-white uppercase tracking-wider bg-[#5A2D1A]/30 hover:bg-[#5A2D1A]/60 px-2 py-1 rounded-md border border-[#D4AF37]/20 transition-all cursor-pointer"
+                                                title="Ver Contenido del Archivo"
+                                              >
+                                                Ver Archivo
+                                              </button>
+                                              <button
+                                                type="button"
+                                                onClick={() => handleDownloadFile(submission.archivo, submission.contenido)}
+                                                className="text-[9px] font-bold text-neutral-300 hover:text-white uppercase tracking-wider bg-neutral-900 hover:bg-neutral-800 px-2 py-1 rounded-md border border-neutral-800 transition-all cursor-pointer inline-flex items-center space-x-1"
+                                                title="Descargar Archivo"
+                                              >
+                                                <Download className="h-2.5 w-2.5" />
+                                                <span>Descargar</span>
+                                              </button>
+                                            </div>
+                                          )}
+                                        </div>
+
+                                        <div className="shrink-0">
+                                          {submission ? (
+                                            <div className="flex items-center space-x-2">
+                                              {submission.estado === 'Calificado' ? (
+                                                <div className="text-right">
+                                                  <span className="bg-emerald-950/40 text-emerald-400 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-emerald-900/50 inline-block mb-1">
+                                                    Nota: {submission.calificacion}/100
+                                                  </span>
+                                                  {submission.comentario && (
+                                                    <span className="text-[9px] text-neutral-500 block max-w-[150px] truncate italic" title={submission.comentario}>
+                                                      &ldquo;{submission.comentario}&rdquo;
+                                                    </span>
+                                                  )}
+                                                </div>
+                                              ) : (
+                                                <span className="bg-amber-950/40 text-amber-400 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-amber-900/50">
+                                                  Entregado
+                                                </span>
+                                              )}
+
+                                              <button
+                                                type="button"
+                                                onClick={() => {
+                                                  setGradingSubmission({ studentName: student.nombreCompleto, submissionId: submission.id, taskId: task.id });
+                                                  setGradeValue(submission.calificacion !== undefined ? String(submission.calificacion) : '90');
+                                                  setGradeComment(submission.comentario || '');
+                                                  setIsGrading(true);
+                                                }}
+                                                className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-[10px] uppercase tracking-wider px-2.5 py-1.5 rounded-lg transition-colors shadow-sm cursor-pointer"
+                                              >
+                                                {submission.estado === 'Calificado' ? 'Corregir' : 'Calificar'}
+                                              </button>
+                                            </div>
+                                          ) : (
+                                            <span className="bg-neutral-900 text-neutral-500 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-neutral-800">
+                                              Sin Entregar (Pendiente)
+                                            </span>
+                                          )}
+                                        </div>
+                                      </div>
+                                    );
+                                  })
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })
                   )}
                 </div>
               </div>
             </div>
+
+            {/* Modal de Calificación de Tarea */}
+            {isGrading && gradingSubmission && (
+              <div className="fixed inset-0 bg-neutral-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl w-full max-w-md p-6 md:p-8 space-y-6 shadow-2xl animate-fade-in text-left">
+                  <div className="flex justify-between items-center border-b border-neutral-800 pb-4">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wider block">Evaluar Tarea</span>
+                      <h3 className="font-display font-bold text-neutral-100 text-lg mt-0.5">{gradingSubmission.studentName}</h3>
+                    </div>
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        setIsGrading(false);
+                        setGradingSubmission(null);
+                      }} 
+                      className="text-neutral-500 hover:text-white bg-neutral-950 p-1.5 rounded-lg border border-neutral-800 hover:border-neutral-700 transition-colors cursor-pointer"
+                    >
+                      <X className="h-4.5 w-4.5" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveTaskGrade} className="space-y-5">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] uppercase tracking-wider text-neutral-400 font-bold block">Calificación Numérica (0-100)</label>
+                      <input 
+                        type="number" 
+                        required 
+                        min="0" 
+                        max="100"
+                        value={gradeValue}
+                        onChange={(e) => setGradeValue(e.target.value)}
+                        className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#D4AF37] text-white font-mono font-bold"
+                        placeholder="Ej. 95"
+                      />
+                    </div>
+
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] uppercase tracking-wider text-neutral-400 font-bold block">Retroalimentación / Comentario</label>
+                      <textarea 
+                        rows={4}
+                        required
+                        value={gradeComment}
+                        onChange={(e) => setGradeComment(e.target.value)}
+                        className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-[#D4AF37] text-white resize-none font-light leading-relaxed"
+                        placeholder="Describa los puntos fuertes del trabajo o aspectos a mejorar..."
+                      />
+                    </div>
+
+                    <div className="bg-neutral-950/40 border border-neutral-850 p-4 rounded-xl flex items-start space-x-2.5">
+                      <Sparkles className="h-4.5 w-4.5 text-[#D4AF37] shrink-0 mt-0.5 animate-pulse" />
+                      <p className="text-[10px] text-neutral-400 font-light leading-relaxed">
+                        Al presionar &ldquo;Guardar Calificación&rdquo;, se enviará una notificación institucional automática en tiempo real tanto al panel del Estudiante como a la cuenta del Padre / Tutor registrado.
+                      </p>
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-2">
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          setIsGrading(false);
+                          setGradingSubmission(null);
+                        }} 
+                        className="bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-bold text-xs uppercase tracking-wider py-3 px-5 rounded-xl transition-all cursor-pointer"
+                      >
+                        Cancelar
+                      </button>
+                      <button 
+                        type="submit" 
+                        className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-xs uppercase tracking-wider py-3 px-5 rounded-xl transition-all shadow-md cursor-pointer"
+                      >
+                        Guardar Calificación
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
+
+            {/* Modal de Previsualización de Archivos */}
+            {viewingFile && (
+              <div className="fixed inset-0 bg-neutral-950/85 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+                <div className="bg-neutral-900 border border-neutral-800 rounded-3xl w-full max-w-2xl p-6 md:p-8 space-y-6 shadow-2xl text-left flex flex-col max-h-[95vh]">
+                  <div className="flex justify-between items-center border-b border-neutral-800 pb-4 shrink-0">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#D4AF37] uppercase tracking-wider block font-mono">Previsualización de Tarea</span>
+                      <h3 className="font-display font-bold text-neutral-100 text-base md:text-lg mt-0.5">{viewingFile.taskTitle}</h3>
+                      <p className="text-[10px] text-neutral-400 font-mono mt-1">
+                        Estudiante: <span className="text-[#D4AF37] font-semibold">{viewingFile.studentName}</span> | Archivo: <span className="text-neutral-300">{viewingFile.filename}</span>
+                      </p>
+                    </div>
+                    <button 
+                      type="button"
+                      onClick={() => setViewingFile(null)} 
+                      className="text-neutral-500 hover:text-white bg-neutral-950 p-2 rounded-xl border border-neutral-850 hover:border-neutral-750 transition-colors cursor-pointer shrink-0"
+                    >
+                      <X className="h-4.5 w-4.5" />
+                    </button>
+                  </div>
+
+                  {/* Document container */}
+                  <div className="flex-1 overflow-y-auto bg-stone-50 text-neutral-900 rounded-2xl p-6 md:p-8 border border-neutral-200 shadow-inner max-h-[60vh] flex flex-col items-center justify-center min-h-[300px]">
+                    {(() => {
+                      if (!viewingFile.contenido) {
+                        return (
+                          <div className="text-center p-6 space-y-3">
+                            <FileText className="h-12 w-12 text-neutral-400 mx-auto" />
+                            <p className="text-sm font-semibold text-neutral-700">Contenido no previsualizable</p>
+                            <p className="text-xs text-neutral-500 max-w-sm">Este archivo se subió como binario o documento complejo (PDF/DOCX). Por favor use el botón de "Descargar Archivo" para abrirlo con su lector de preferencia de forma local.</p>
+                          </div>
+                        );
+                      }
+
+                      if (viewingFile.contenido.startsWith('data:image/')) {
+                        return (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <img 
+                              src={viewingFile.contenido} 
+                              alt={viewingFile.filename} 
+                              className="max-h-[420px] max-w-full object-contain rounded-lg border border-stone-200 shadow" 
+                              referrerPolicy="no-referrer"
+                            />
+                          </div>
+                        );
+                      }
+
+                      if (viewingFile.contenido.startsWith('data:')) {
+                        const isText = viewingFile.contenido.includes('data:text/') || viewingFile.filename.endsWith('.txt');
+                        if (isText) {
+                          try {
+                            const base64Data = viewingFile.contenido.split(',')[1];
+                            const decodedText = atob(base64Data);
+                            return (
+                              <pre className="w-full text-left font-mono text-xs md:text-sm text-neutral-800 whitespace-pre-wrap overflow-auto h-full self-start">
+                                {decodedText}
+                              </pre>
+                            );
+                          } catch (e) {
+                            // fallback
+                          }
+                        }
+                        return (
+                          <div className="text-center p-6 space-y-3">
+                            <FileText className="h-12 w-12 text-[#D4AF37] mx-auto" />
+                            <p className="text-sm font-semibold text-neutral-700">Documento Binario ({viewingFile.filename.split('.').pop()?.toUpperCase()})</p>
+                            <p className="text-xs text-neutral-500 max-w-sm">No es posible previsualizar de forma directa este formato en el navegador. Presione el botón de abajo para descargarlo y abrirlo en su computadora.</p>
+                          </div>
+                        );
+                      }
+
+                      // Raw plain text
+                      return (
+                        <pre className="w-full text-left font-mono text-xs md:text-sm text-neutral-800 whitespace-pre-wrap overflow-auto h-full self-start">
+                          {viewingFile.contenido}
+                        </pre>
+                      );
+                    })()}
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2 border-t border-neutral-800 shrink-0">
+                    <span className="text-[10px] text-neutral-400 font-light text-center sm:text-left leading-relaxed max-w-sm">
+                      El estudiante ha subido el documento en formato digital. Puede visualizar el contenido original o descargarlo tal cual fue subido.
+                    </span>
+                    <div className="flex gap-3 w-full sm:w-auto justify-end">
+                      <button 
+                        type="button" 
+                        onClick={() => setViewingFile(null)} 
+                        className="w-full sm:w-auto bg-neutral-800 hover:bg-neutral-700 text-neutral-300 font-bold text-xs uppercase tracking-wider py-3 px-5 rounded-xl transition-all cursor-pointer"
+                      >
+                        Cerrar Vista
+                      </button>
+                      <button 
+                        type="button" 
+                        onClick={() => {
+                          handleDownloadFile(viewingFile.filename, viewingFile.contenido);
+                        }}
+                        className="w-full sm:w-auto bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-xs uppercase tracking-wider py-3 px-5 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer"
+                      >
+                        <Download className="h-4 w-4" />
+                        <span>Descargar Archivo</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -3462,28 +4161,116 @@ service cloud.firestore {
                         ) : (
                           <div className="space-y-3 text-left md:text-right">
                             {uploadingTaskId === tsk.id ? (
-                              <div className="space-y-2 max-w-xs ml-auto">
-                                <label className="text-[9px] uppercase tracking-wider text-neutral-500 font-bold block">Nombre de Archivo a Entregar</label>
-                                <div className="flex bg-neutral-900 rounded-lg p-1 border border-neutral-800">
-                                  <input 
-                                    type="text"
-                                    value={uploadedFile}
-                                    onChange={(e) => setUploadedFile(e.target.value)}
-                                    placeholder="Duarte_Tarea_Mate.pdf"
-                                    className="bg-transparent text-xs px-2 focus:outline-none w-full text-white"
-                                  />
-                                  <button
-                                    onClick={() => handleFileUpload(tsk.id)}
-                                    className="bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 px-3 py-1.5 rounded-md text-[10px] font-bold uppercase"
+                              <div className="space-y-4 max-w-md ml-auto text-left bg-neutral-900 p-5 rounded-2xl border border-neutral-800 animate-fade-in">
+                                <div className="flex justify-between items-center border-b border-neutral-800 pb-2">
+                                  <span className="text-[10px] uppercase tracking-wider text-[#D4AF37] font-bold">Subir Archivo de Tarea</span>
+                                  <button 
+                                    type="button"
+                                    onClick={() => {
+                                      setUploadingTaskId(null);
+                                      setUploadedFile('');
+                                      setIsUploading(false);
+                                      setUploadProgress(0);
+                                    }} 
+                                    className="text-neutral-500 hover:text-white transition-colors cursor-pointer"
                                   >
-                                    Enviar
+                                    <X className="h-4 w-4" />
                                   </button>
                                 </div>
+
+                                {!uploadedFile && !isUploading ? (
+                                  <div
+                                    onDragOver={(e) => {
+                                      e.preventDefault();
+                                      setDragOverTaskId(tsk.id);
+                                    }}
+                                    onDragLeave={() => setDragOverTaskId(null)}
+                                    onDrop={(e) => {
+                                      e.preventDefault();
+                                      setDragOverTaskId(null);
+                                      const files = e.dataTransfer.files;
+                                      if (files && files.length > 0) {
+                                        startSimulatedUpload(files[0]);
+                                      }
+                                    }}
+                                    onClick={() => {
+                                      const fileInput = document.getElementById(`file-input-${tsk.id}`);
+                                      if (fileInput) fileInput.click();
+                                    }}
+                                    className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${
+                                      dragOverTaskId === tsk.id
+                                        ? 'border-[#D4AF37] bg-[#D4AF37]/5'
+                                        : 'border-neutral-800 hover:border-[#D4AF37]/50 hover:bg-neutral-900/50'
+                                    }`}
+                                  >
+                                    <input
+                                      type="file"
+                                      id={`file-input-${tsk.id}`}
+                                      className="hidden"
+                                      onChange={(e) => {
+                                        const files = e.target.files;
+                                        if (files && files.length > 0) {
+                                          startSimulatedUpload(files[0]);
+                                        }
+                                      }}
+                                    />
+                                    <Upload className="h-8 w-8 text-[#D4AF37]/60 mx-auto mb-2" />
+                                    <span className="text-xs font-semibold text-neutral-300 block">Arrastre su tarea aquí o haga clic para buscar</span>
+                                    <span className="text-[10px] text-neutral-500 block mt-1">Formatos admitidos: PDF, DOCX, ZIP, JPG (Máx. 10MB)</span>
+                                  </div>
+                                ) : isUploading ? (
+                                  <div className="space-y-2 p-4 bg-neutral-950 rounded-xl border border-neutral-800">
+                                    <div className="flex justify-between items-center text-xs">
+                                      <span className="font-medium text-neutral-400 font-mono truncate max-w-[200px]">{uploadedFile}</span>
+                                      <span className="font-bold text-[#D4AF37] font-mono">{uploadProgress}%</span>
+                                    </div>
+                                    <div className="w-full bg-neutral-850 h-1.5 rounded-full overflow-hidden">
+                                      <div 
+                                        className="bg-[#D4AF37] h-full transition-all duration-150" 
+                                        style={{ width: `${uploadProgress}%` }}
+                                      />
+                                    </div>
+                                    <span className="text-[9px] text-neutral-500 block italic">Subiendo archivo de manera segura a la nube institucional...</span>
+                                  </div>
+                                ) : (
+                                  <div className="space-y-4">
+                                    <div className="flex items-center justify-between p-4 bg-neutral-950 rounded-xl border border-[#D4AF37]/20">
+                                      <div className="flex items-center space-x-3">
+                                        <div className="bg-emerald-950/40 p-2 rounded-lg border border-emerald-900/50">
+                                          <Check className="h-4 w-4 text-emerald-400" />
+                                        </div>
+                                        <div>
+                                          <span className="text-xs font-bold text-neutral-200 block truncate max-w-[200px]">{uploadedFile}</span>
+                                          <span className="text-[10px] text-emerald-400 font-medium block">¡Archivo listo para entregar!</span>
+                                        </div>
+                                      </div>
+                                      <button 
+                                        type="button"
+                                        onClick={() => {
+                                          setUploadedFile('');
+                                          setUploadProgress(0);
+                                        }} 
+                                        className="text-neutral-500 hover:text-red-400 transition-colors text-xs cursor-pointer"
+                                        title="Eliminar archivo"
+                                      >
+                                        <Trash className="h-4 w-4" />
+                                      </button>
+                                    </div>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleFileUpload(tsk.id)}
+                                      className="w-full bg-[#D4AF37] hover:bg-[#F3D065] text-neutral-950 font-bold text-xs uppercase tracking-wider py-3 rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer"
+                                    >
+                                      <span>Enviar entrega de tarea</span>
+                                    </button>
+                                  </div>
+                                )}
                               </div>
                             ) : (
                               <button
+                                type="button"
                                 onClick={() => setUploadingTaskId(tsk.id)}
-                                className="flex items-center space-x-1.5 bg-[#5A2D1A] hover:bg-[#7D4229] text-white px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-colors shadow-sm ml-auto"
+                                className="flex items-center space-x-1.5 bg-[#5A2D1A] hover:bg-[#7D4229] text-white px-5 py-2.5 rounded-xl text-xs font-bold tracking-wider uppercase transition-colors shadow-sm ml-auto cursor-pointer"
                               >
                                 <Upload className="h-4 w-4 text-[#D4AF37]" />
                                 <span>Entregar Tarea</span>

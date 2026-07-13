@@ -51,12 +51,45 @@ export interface Grade {
   estudianteId: string;
   materiaId: string;
   materiaNombre: string;
+  
+  // Competency 1: Comunicativa
+  comp1_p1: number;
+  comp1_p2: number;
+  comp1_p3: number;
+  comp1_p4: number;
+  
+  // Competency 2: Pensamiento Lógico, Creativo y Crítico / Resolución de Problemas
+  comp2_p1: number;
+  comp2_p2: number;
+  comp2_p3: number;
+  comp2_p4: number;
+  
+  // Competency 3: Científica y Tecnológica / Ambiental y de la Salud
+  comp3_p1: number;
+  comp3_p2: number;
+  comp3_p3: number;
+  comp3_p4: number;
+  
+  // Competency 4: Ética y Ciudadana / Desarrollo Personal y Espiritual
+  comp4_p1: number;
+  comp4_p2: number;
+  comp4_p3: number;
+  comp4_p4: number;
+
+  // Competency group averages (Promedio de cada competencia)
+  pc1: number;
+  pc2: number;
+  pc3: number;
+  pc4: number;
+
+  // Legacy fields to maintain compatibility where simple lookup is needed
   p1: number; // 0-100
   p2: number;
   p3: number;
   p4: number;
+  
   examenFinal?: number;
-  promedio: number;
+  promedio: number; // Calificación Final del Área
   observaciones?: string;
   estado: 'Aprobado' | 'Reprobado' | 'Pendiente';
   updatedAt: string;
@@ -94,6 +127,7 @@ export interface TaskSubmission {
   estudianteNombre: string;
   fechaEntrega: string;
   archivo: string;
+  contenido?: string; // Real content of the file uploaded by the student
   calificacion?: number;
   comentario?: string;
   estado: 'Entregado' | 'Calificado' | 'Pendiente';

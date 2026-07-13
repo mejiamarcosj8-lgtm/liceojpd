@@ -23,7 +23,15 @@ import { BookOpen, ShieldAlert, Search, X, ChevronRight, FileText } from 'lucide
 
 export default function App() {
   const [view, setView] = useState<'web' | 'portal' | '404' | 'maintenance'>('web');
-  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserType | null>(() => {
+    try {
+      const savedUser = localStorage.getItem('juan_pablo_duarte_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (e) {
+      console.error('Error reading user from localStorage:', e);
+      return null;
+    }
+  });
   const [darkMode, setDarkMode] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [initialPortalRole, setInitialPortalRole] = useState<UserRole | undefined>(undefined);
@@ -63,10 +71,20 @@ export default function App() {
 
   const handleLoginSuccess = (user: UserType) => {
     setCurrentUser(user);
+    try {
+      localStorage.setItem('juan_pablo_duarte_user', JSON.stringify(user));
+    } catch (e) {
+      console.error('Error saving user to localStorage:', e);
+    }
   };
 
   const handleLogout = () => {
     setCurrentUser(null);
+    try {
+      localStorage.removeItem('juan_pablo_duarte_user');
+    } catch (e) {
+      console.error('Error removing user from localStorage:', e);
+    }
   };
 
   // Search filter matches

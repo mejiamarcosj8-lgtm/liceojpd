@@ -94,7 +94,7 @@ export default function ReportCardView({
   const [isEditingGrades, setIsEditingGrades] = useState(false);
   const [editingStudentId, setEditingStudentId] = useState<string | null>(null);
   const [editingGradesForm, setEditingGradesForm] = useState<{
-    [subjectId: string]: { p1: number; p2: number; p3: number; p4: number }
+    [subjectId: string]: Partial<Grade>
   }>({});
 
   const handleResetCourseGrades = (courseId: string) => {
@@ -167,12 +167,7 @@ export default function ReportCardView({
     const initialForm: typeof editingGradesForm = {};
     courseSubs.forEach(sub => {
       const g = studentGrds.find(gr => gr.materiaId === sub.id || isSubjectNameMatch(gr.materiaNombre, sub.nombre));
-      initialForm[sub.id] = {
-        p1: g?.p1 || 0,
-        p2: g?.p2 || 0,
-        p3: g?.p3 || 0,
-        p4: g?.p4 || 0,
-      };
+      initialForm[sub.id] = g ? { ...g } : {};
     });
 
     setEditingGradesForm(initialForm);
@@ -188,14 +183,26 @@ export default function ReportCardView({
 
     const courseSubs = subjects.filter(s => s.cursoId === student.cursoId);
     const gradesList = courseSubs.map(sub => {
-      const formVal = editingGradesForm[sub.id] || { p1: 0, p2: 0, p3: 0, p4: 0 };
+      const formVal = editingGradesForm[sub.id] || {};
       return {
         materiaId: sub.id,
         materiaNombre: sub.nombre,
-        p1: Number(formVal.p1),
-        p2: Number(formVal.p2),
-        p3: Number(formVal.p3),
-        p4: Number(formVal.p4),
+        comp1_p1: Number(formVal.comp1_p1 || 0),
+        comp1_p2: Number(formVal.comp1_p2 || 0),
+        comp1_p3: Number(formVal.comp1_p3 || 0),
+        comp1_p4: Number(formVal.comp1_p4 || 0),
+        comp2_p1: Number(formVal.comp2_p1 || 0),
+        comp2_p2: Number(formVal.comp2_p2 || 0),
+        comp2_p3: Number(formVal.comp2_p3 || 0),
+        comp2_p4: Number(formVal.comp2_p4 || 0),
+        comp3_p1: Number(formVal.comp3_p1 || 0),
+        comp3_p2: Number(formVal.comp3_p2 || 0),
+        comp3_p3: Number(formVal.comp3_p3 || 0),
+        comp3_p4: Number(formVal.comp3_p4 || 0),
+        comp4_p1: Number(formVal.comp4_p1 || 0),
+        comp4_p2: Number(formVal.comp4_p2 || 0),
+        comp4_p3: Number(formVal.comp4_p3 || 0),
+        comp4_p4: Number(formVal.comp4_p4 || 0),
       };
     });
 
@@ -884,64 +891,131 @@ export default function ReportCardView({
             </div>
 
             {/* Table of Grades */}
-            <div className="space-y-4">
-              <table className="w-full text-xs text-left border-collapse border border-neutral-300">
+            <div className="space-y-4 overflow-x-auto" style={{ scrollbarWidth: 'thin' }}>
+              <table className="w-full text-[11px] text-left border-collapse border border-neutral-350 min-w-[700px]">
                 <thead>
-                  <tr className="bg-neutral-100 border-b border-neutral-300">
-                    <th className="p-3 font-bold text-neutral-800 border-r border-neutral-300 w-[40%]">Asignatura</th>
-                    <th className="p-3 text-center font-bold text-neutral-800 border-r border-neutral-300 w-[10%]">P1</th>
-                    <th className="p-3 text-center font-bold text-neutral-800 border-r border-neutral-300 w-[10%]">P2</th>
-                    <th className="p-3 text-center font-bold text-neutral-800 border-r border-neutral-300 w-[10%]">P3</th>
-                    <th className="p-3 text-center font-bold text-neutral-800 border-r border-neutral-300 w-[10%]">P4</th>
-                    <th className="p-3 text-center font-bold text-neutral-800 border-r border-neutral-300 w-[10%] bg-neutral-100">Prom.</th>
-                    <th className="p-3 text-center font-bold text-neutral-800 w-[10%]">Estado</th>
+                  <tr className="bg-neutral-100 border-b border-neutral-350">
+                    <th className="p-2.5 font-bold text-neutral-800 border-r border-neutral-350 w-[24%]">Asignatura / Área</th>
+                    <th className="p-2.5 font-bold text-neutral-800 border-r border-neutral-350 w-[36%]">Competencia Fundamental (Área)</th>
+                    <th className="p-2.5 text-center font-bold text-neutral-800 border-r border-neutral-350 w-[6%]">P1</th>
+                    <th className="p-2.5 text-center font-bold text-neutral-800 border-r border-neutral-350 w-[6%]">P2</th>
+                    <th className="p-2.5 text-center font-bold text-neutral-800 border-r border-neutral-350 w-[6%]">P3</th>
+                    <th className="p-2.5 text-center font-bold text-neutral-800 border-r border-neutral-350 w-[6%]">P4</th>
+                    <th className="p-2.5 text-center font-bold text-neutral-800 border-r border-neutral-350 w-[8%]">Prom. Comp.</th>
+                    <th className="p-2.5 text-center font-bold text-neutral-800 w-[14%]">Calificación Final Área</th>
                   </tr>
                 </thead>
                 <tbody>
                   {/* Map subjects or grades */}
-                  {subjects.filter(s => s.cursoId === (selectedCourseId || selectedStudent.cursoId)).map((sub, index) => {
+                  {subjects.filter(s => s.cursoId === (selectedCourseId || selectedStudent.cursoId)).map((sub) => {
                     const grd = grades.find(g => 
                       g.estudianteId === selectedStudent.id && 
                       (g.materiaId === sub.id || isSubjectNameMatch(g.materiaNombre, sub.nombre))
                     ) || {
-                      p1: 0, p2: 0, p3: 0, p4: 0, promedio: 0, estado: 'Pendiente'
+                      comp1_p1: 0, comp1_p2: 0, comp1_p3: 0, comp1_p4: 0, pc1: 0,
+                      comp2_p1: 0, comp2_p2: 0, comp2_p3: 0, comp2_p4: 0, pc2: 0,
+                      comp3_p1: 0, comp3_p2: 0, comp3_p3: 0, comp3_p4: 0, pc3: 0,
+                      comp4_p1: 0, comp4_p2: 0, comp4_p3: 0, comp4_p4: 0, pc4: 0,
+                      promedio: 0, estado: 'Pendiente'
                     };
 
-                    const displayGrd = (val: number) => {
-                      return val > 0 ? val : '-';
-                    };
+                    const displayVal = (v: number) => (v > 0 ? v : '-');
 
-                    return (
-                      <tr key={sub.id} className={`border-b border-neutral-200 hover:bg-neutral-50/50 ${index % 2 === 1 ? 'bg-neutral-50/20' : ''}`}>
-                        <td className="p-3 font-bold text-neutral-900 border-r border-neutral-200">{sub.nombre}</td>
-                        <td className="p-3 text-center border-r border-neutral-200 font-mono">{displayGrd(grd.p1)}</td>
-                        <td className="p-3 text-center border-r border-neutral-200 font-mono">{displayGrd(grd.p2)}</td>
-                        <td className="p-3 text-center border-r border-neutral-200 font-mono">{displayGrd(grd.p3)}</td>
-                        <td className="p-3 text-center border-r border-neutral-200 font-mono">{displayGrd(grd.p4)}</td>
-                        <td className="p-3 text-center border-r border-neutral-200 font-bold font-mono text-[#5A2D1A] bg-neutral-50/40">
-                          {grd.promedio > 0 ? grd.promedio : '-'}
-                        </td>
-                        <td className="p-3 text-center font-bold">
-                          {grd.promedio > 0 ? (
-                            <span className={grd.estado === 'Aprobado' ? 'text-emerald-700' : 'text-red-600'}>
-                              {grd.estado}
-                            </span>
-                          ) : (
-                            <span className="text-neutral-400 font-normal">Pendiente</span>
+                    const compRows = [
+                      { id: 1, name: 'Competencia Comunicativa', p1: grd.comp1_p1, p2: grd.comp1_p2, p3: grd.comp1_p3, p4: grd.comp1_p4, pc: grd.pc1 },
+                      { id: 2, name: 'Pensamiento Lógico, Crítico y Creativo / Resolución de Problemas', p1: grd.comp2_p1, p2: grd.comp2_p2, p3: grd.comp2_p3, p4: grd.comp2_p4, pc: grd.pc2 },
+                      { id: 3, name: 'Científica y Tecnológica / Ambiental y de la Salud', p1: grd.comp3_p1, p2: grd.comp3_p2, p3: grd.comp3_p3, p4: grd.comp3_p4, pc: grd.pc3 },
+                      { id: 4, name: 'Ética y Ciudadana / Desarrollo Personal y Espiritual', p1: grd.comp4_p1, p2: grd.comp4_p2, p3: grd.comp4_p3, p4: grd.comp4_p4, pc: grd.pc4 },
+                    ];
+
+                    return compRows.map((comp, cIdx) => {
+                      return (
+                        <tr key={`${sub.id}-${comp.id}`} className="border-b border-neutral-350 hover:bg-neutral-50/30">
+                          {cIdx === 0 && (
+                            <td rowSpan={4} className="p-2.5 font-bold text-neutral-900 border-r border-neutral-350 align-middle bg-neutral-50/20 text-xs">
+                              {sub.nombre}
+                            </td>
                           )}
-                        </td>
-                      </tr>
-                    );
+                          <td className="p-2 text-neutral-700 border-r border-neutral-350 text-[10px] leading-relaxed">
+                            {comp.name}
+                          </td>
+                          <td className="p-2 text-center border-r border-neutral-350 font-mono text-[10.5px]">{displayVal(comp.p1)}</td>
+                          <td className="p-2 text-center border-r border-neutral-350 font-mono text-[10.5px]">{displayVal(comp.p2)}</td>
+                          <td className="p-2 text-center border-r border-neutral-350 font-mono text-[10.5px]">{displayVal(comp.p3)}</td>
+                          <td className="p-2 text-center border-r border-neutral-350 font-mono text-[10.5px]">{displayVal(comp.p4)}</td>
+                          <td className="p-2 text-center border-r border-neutral-350 font-bold font-mono text-[10.5px] bg-neutral-50/30 text-neutral-850">{displayVal(comp.pc)}</td>
+                          {cIdx === 0 && (
+                            <td rowSpan={4} className="p-2.5 text-center border-neutral-350 font-black text-[11px] font-mono text-[#5A2D1A] bg-[#5A2D1A]/5 align-middle">
+                              {grd.promedio > 0 ? (
+                                <div className="space-y-1">
+                                  <div className="text-xs font-black">{grd.promedio} pts</div>
+                                  <div className={`text-[8.5px] font-extrabold uppercase ${grd.promedio >= 70 ? 'text-emerald-700' : 'text-red-600'}`}>
+                                    {grd.promedio >= 70 ? 'Aprobado' : 'Reprobado'}
+                                  </div>
+                                </div>
+                              ) : (
+                                <span className="text-neutral-450 font-normal italic">Pendiente</span>
+                              )}
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    });
                   })}
                 </tbody>
               </table>
 
+              {/* Ministry of Education Additional Sections (Left empty as they are filled by hand later) */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6 text-xs text-neutral-700 print:grid-cols-3">
+                <div className="border border-neutral-300 rounded-xl p-3 bg-neutral-50/45">
+                  <span className="block font-bold text-[9px] text-neutral-500 uppercase tracking-wider">Evaluación Completiva</span>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Calif. (30%)</span>
+                      <div className="h-6 border-b border-dashed border-neutral-400"></div>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Puntaje Final</span>
+                      <div className="h-6 border-b border-dashed border-neutral-400"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-neutral-300 rounded-xl p-3 bg-neutral-50/45">
+                  <span className="block font-bold text-[9px] text-neutral-500 uppercase tracking-wider">Calificación Extraordinaria</span>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Examen (70%)</span>
+                      <div className="h-6 border-b border-dashed border-neutral-400"></div>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Puntaje Final</span>
+                      <div className="h-6 border-b border-dashed border-neutral-400"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border border-neutral-300 rounded-xl p-3 bg-neutral-50/45 font-sans">
+                  <span className="block font-bold text-[9px] text-neutral-500 uppercase tracking-wider">Evaluación Especial / Situación Final</span>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Eval. Especial</span>
+                      <div className="h-6 border-b border-dashed border-neutral-400"></div>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-neutral-400 block">Situación Final</span>
+                      <div className="h-6 border-b border-dashed border-neutral-400 font-extrabold text-[#5A2D1A]"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* General Summary row */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-neutral-50 border border-neutral-200 p-4 rounded-xl text-xs">
                 <div className="space-y-1">
-                  <span className="block font-bold text-neutral-800">Nota de Auditoría de Carga Académica:</span>
+                  <span className="block font-bold text-neutral-800">Nota de Auditoría de Carga Académica por Competencias:</span>
                   <p className="text-[10px] text-neutral-500 leading-normal">
-                    Este boletín oficial registra las notas que los docentes cargan progresivamente por periodo escolar (P1, P2, P3 y P4). El promedio final de cada materia se calculará formalmente al completar el ciclo reglamentario.
+                    Este boletín oficial registra el rendimiento de las competencias fundamentales del estudiante por periodo escolar (P1, P2, P3 y P4). El promedio final de cada competencia se obtiene del promedio simple de sus periodos calificados.
                   </p>
                 </div>
                 <div className="shrink-0 text-left sm:text-right font-display p-3 bg-[#5A2D1A]/5 border border-[#5A2D1A]/10 rounded-xl">
@@ -1020,103 +1094,122 @@ export default function ReportCardView({
                 <div className="bg-amber-500/5 border border-amber-500/10 p-3.5 rounded-2xl text-xs text-neutral-300 flex items-start gap-2.5">
                   <AlertTriangle className="h-4.5 w-4.5 text-[#D4AF37] shrink-0 mt-0.5" />
                   <p className="leading-relaxed font-light">
-                    Como administrador, puede modificar directamente los cuatrimestres (P1 a P4). Un valor de <strong className="text-white">0</strong> se interpretará como "Pendiente" o sin calificar en los reportes oficiales. Las notas se guardarán en lote de manera segura.
+                    Como administrador, puede modificar directamente las 4 competencias fundamentales para cada asignatura del alumno. Ingrese las notas periódicas de P1 a P4 de cada competencia. El sistema calculará automáticamente los promedios parciales y la calificación final del área.
                   </p>
                 </div>
 
-                <div className="space-y-4">
-                  {/* Table headers */}
-                  <div className="grid grid-cols-12 text-[10px] font-bold text-neutral-500 uppercase tracking-wider pb-2 border-b border-neutral-900 px-2">
-                    <span className="col-span-5">Asignatura</span>
-                    <span className="col-span-1.5 text-center">P1</span>
-                    <span className="col-span-1.5 text-center">P2</span>
-                    <span className="col-span-1.5 text-center">P3</span>
-                    <span className="col-span-1.5 text-center">P4</span>
-                    <span className="col-span-1 text-center">Prom</span>
-                  </div>
-
-                  {/* Table Rows */}
+                <div className="space-y-5">
                   {courseSubs.map(sub => {
-                    const formVal = editingGradesForm[sub.id] || { p1: 0, p2: 0, p3: 0, p4: 0 };
+                    const formVal = editingGradesForm[sub.id] || {};
                     
-                    // Calculate preview average live
-                    const p1 = Number(formVal.p1 || 0);
-                    const p2 = Number(formVal.p2 || 0);
-                    const p3 = Number(formVal.p3 || 0);
-                    const p4 = Number(formVal.p4 || 0);
-                    const filled = [p1, p2, p3, p4].filter(p => p > 0);
-                    const liveProm = filled.length > 0 ? Math.round(filled.reduce((a, b) => a + b, 0) / filled.length) : 0;
-
-                    const handleFieldChange = (period: 'p1' | 'p2' | 'p3' | 'p4', valStr: string) => {
-                      let val = parseInt(valStr, 10);
-                      if (isNaN(val) || val < 0) val = 0;
-                      if (val > 100) val = 100;
-
-                      setEditingGradesForm(prev => ({
-                        ...prev,
-                        [sub.id]: {
-                          ...prev[sub.id],
-                          [period]: val
-                        }
-                      }));
-                    };
+                    const competenciesDef = [
+                      { id: 1, key: 'comp1', label: '1. Competencia Comunicativa' },
+                      { id: 2, key: 'comp2', label: '2. Pensamiento Lógico, Crítico...' },
+                      { id: 3, key: 'comp3', label: '3. Científica y Tecnológica...' },
+                      { id: 4, key: 'comp4', label: '4. Ética y Ciudadana...' },
+                    ];
 
                     return (
-                      <div key={sub.id} className="grid grid-cols-12 items-center gap-2 py-2 border-b border-neutral-900 px-2 last:border-b-0 hover:bg-neutral-900/20 rounded-xl transition-colors">
-                        <span className="col-span-5 text-xs font-semibold text-white truncate pr-2">
-                          {sub.nombre}
-                        </span>
+                      <div key={sub.id} className="border border-neutral-800 p-4 rounded-2xl bg-neutral-900/20 space-y-3">
+                        <h4 className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider border-b border-neutral-800 pb-1.5 flex justify-between">
+                          <span>{sub.nombre}</span>
+                          <span className="text-[10px] text-neutral-500 normal-case">Código: {sub.id}</span>
+                        </h4>
                         
-                        <div className="col-span-1.5 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={formVal.p1 || ''}
-                            onChange={(e) => handleFieldChange('p1', e.target.value)}
-                            placeholder="0"
-                            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg py-1 px-1.5 text-xs font-mono text-center text-white focus:outline-none focus:border-[#D4AF37]"
-                          />
-                        </div>
+                        <div className="space-y-2">
+                          {/* Inner headers */}
+                          <div className="grid grid-cols-12 text-[9px] font-bold text-neutral-500 uppercase tracking-wider pb-1">
+                            <span className="col-span-4">Competencia Fundamental</span>
+                            <span className="col-span-1.5 text-center">P1</span>
+                            <span className="col-span-1.5 text-center">P2</span>
+                            <span className="col-span-1.5 text-center">P3</span>
+                            <span className="col-span-1.5 text-center">P4</span>
+                            <span className="col-span-2 text-center">Prom. Comp.</span>
+                          </div>
 
-                        <div className="col-span-1.5 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={formVal.p2 || ''}
-                            onChange={(e) => handleFieldChange('p2', e.target.value)}
-                            placeholder="0"
-                            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg py-1 px-1.5 text-xs font-mono text-center text-white focus:outline-none focus:border-[#D4AF37]"
-                          />
-                        </div>
+                          {competenciesDef.map(comp => {
+                            const p1Key = `${comp.key}_p1`;
+                            const p2Key = `${comp.key}_p2`;
+                            const p3Key = `${comp.key}_p3`;
+                            const p4Key = `${comp.key}_p4`;
 
-                        <div className="col-span-1.5 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={formVal.p3 || ''}
-                            onChange={(e) => handleFieldChange('p3', e.target.value)}
-                            placeholder="0"
-                            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg py-1 px-1.5 text-xs font-mono text-center text-white focus:outline-none focus:border-[#D4AF37]"
-                          />
-                        </div>
+                            const p1 = formVal[p1Key as keyof Grade] !== undefined ? Number(formVal[p1Key as keyof Grade]) : 0;
+                            const p2 = formVal[p2Key as keyof Grade] !== undefined ? Number(formVal[p2Key as keyof Grade]) : 0;
+                            const p3 = formVal[p3Key as keyof Grade] !== undefined ? Number(formVal[p3Key as keyof Grade]) : 0;
+                            const p4 = formVal[p4Key as keyof Grade] !== undefined ? Number(formVal[p4Key as keyof Grade]) : 0;
+                            
+                            const filled = [p1, p2, p3, p4].filter(p => p > 0);
+                            const livePc = filled.length > 0 ? Math.round(filled.reduce((a, b) => a + b, 0) / filled.length) : 0;
 
-                        <div className="col-span-1.5 text-center">
-                          <input
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={formVal.p4 || ''}
-                            onChange={(e) => handleFieldChange('p4', e.target.value)}
-                            placeholder="0"
-                            className="w-full bg-neutral-900 border border-neutral-800 rounded-lg py-1 px-1.5 text-xs font-mono text-center text-white focus:outline-none focus:border-[#D4AF37]"
-                          />
-                        </div>
+                            const handleCompFieldChange = (field: string, valStr: string) => {
+                              let val = parseInt(valStr, 10);
+                              if (isNaN(val) || val < 0) val = 0;
+                              if (val > 100) val = 100;
 
-                        <div className="col-span-1 text-center font-bold font-mono text-[#D4AF37] text-xs">
-                          {liveProm > 0 ? liveProm : '-'}
+                              setEditingGradesForm(prev => ({
+                                ...prev,
+                                [sub.id]: {
+                                  ...prev[sub.id],
+                                  [field]: val
+                                }
+                              }));
+                            };
+
+                            return (
+                              <div key={comp.id} className="grid grid-cols-12 items-center gap-2 text-[11px] py-1 border-b border-neutral-900 last:border-b-0">
+                                <span className="col-span-4 text-neutral-450 font-light truncate">
+                                  {comp.label}
+                                </span>
+                                <div className="col-span-1.5 text-center">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={p1 || ''}
+                                    onChange={(e) => handleCompFieldChange(p1Key, e.target.value)}
+                                    placeholder="-"
+                                    className="w-full bg-neutral-950 border border-neutral-800 rounded-lg py-1 px-1 text-center text-white text-[11px] font-mono focus:outline-none focus:border-[#D4AF37]"
+                                  />
+                                </div>
+                                <div className="col-span-1.5 text-center">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={p2 || ''}
+                                    onChange={(e) => handleCompFieldChange(p2Key, e.target.value)}
+                                    placeholder="-"
+                                    className="w-full bg-neutral-950 border border-neutral-800 rounded-lg py-1 px-1 text-center text-white text-[11px] font-mono focus:outline-none focus:border-[#D4AF37]"
+                                  />
+                                </div>
+                                <div className="col-span-1.5 text-center">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={p3 || ''}
+                                    onChange={(e) => handleCompFieldChange(p3Key, e.target.value)}
+                                    placeholder="-"
+                                    className="w-full bg-neutral-950 border border-neutral-800 rounded-lg py-1 px-1 text-center text-white text-[11px] font-mono focus:outline-none focus:border-[#D4AF37]"
+                                  />
+                                </div>
+                                <div className="col-span-1.5 text-center">
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    max="100"
+                                    value={p4 || ''}
+                                    onChange={(e) => handleCompFieldChange(p4Key, e.target.value)}
+                                    placeholder="-"
+                                    className="w-full bg-neutral-950 border border-neutral-800 rounded-lg py-1 px-1 text-center text-white text-[11px] font-mono focus:outline-none focus:border-[#D4AF37]"
+                                  />
+                                </div>
+                                <div className="col-span-2 text-center font-bold text-[#D4AF37] font-mono bg-neutral-950/40 py-1 rounded">
+                                  {livePc > 0 ? livePc : '-'}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     );
